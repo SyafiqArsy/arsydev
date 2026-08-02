@@ -1,0 +1,94 @@
+src/
+│
+├── app/
+│   └── page.tsx
+│
+├── components/
+│   ├── layout/
+│   │     Footer.tsx
+│   │
+│   ├── sections/
+│   │     HeroSection.tsx
+│   │     ProjectsSection.tsx
+│   │     SkillsSection.tsx
+│   │     ContactSection.tsx
+│   │
+│   ├── animations/
+│   │     LoadingScreen.tsx
+│   │
+│   └── ui/
+│         ProjectCard.tsx
+│         PanelReveal.tsx
+│
+├── hooks/
+│      useHorizontalScroll.ts
+│      useParallax.ts
+│
+├── lib/
+│      animations.ts
+│
+└── data/
+       projects.ts
+
+
+page.tsx :
+"use client";
+
+import LoadingScreen from "@/components/animations/LoadingScreen";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+
+import HeroSection from "@/components/sections/HeroSection";
+import ProjectsSection from "@/components/sections/ProjectsSection";
+import SkillsSection from "@/components/sections/SkillsSection";
+import ContactSection from "@/components/sections/ContactSection";
+
+import { useHorizontalScroll } from "@/hooks/useHorizontalScroll";
+
+export default function Home() {
+
+    const {
+        tunnelRef,
+        trackX,
+        smoothProgress,
+        activeSection,
+        scrollToSection,
+    } = useHorizontalScroll(4);
+
+    return (
+        <>
+            <LoadingScreen />
+
+            <Navbar
+                progress={smoothProgress}
+                activeSection={activeSection}
+                scrollToSection={scrollToSection}
+            />
+
+            <div
+                ref={tunnelRef}
+                style={{ height: "300vh" }}
+            />
+
+            <motion.div
+                className="horizontal-track"
+                style={{ x: trackX }}
+            >
+
+                <HeroSection
+                    scrollToProjects={() => scrollToSection(1)}
+                />
+
+                <ProjectsSection />
+
+                <SkillsSection />
+
+                <ContactSection />
+
+            </motion.div>
+
+            <Footer />
+
+        </>
+    );
+}

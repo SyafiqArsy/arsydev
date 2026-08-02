@@ -12,35 +12,35 @@ const projects = [
     title: "Nebula Dashboard", category: "Web App / SaaS",
     description: "A real-time analytics dashboard with interactive data visualizations and AI-powered insights.",
     tech: ["React", "D3.js", "Node.js", "WebSocket"],
-    gradient: "from-purple-600 via-violet-600 to-indigo-700",
+    gradient: "from-blue-700 via-blue-800 to-slate-900",
   },
   {
     id: 2,
     title: "Flux E-Commerce", category: "Full-Stack / E-Commerce",
     description: "Modern e-commerce platform with seamless checkout, inventory management, and personalized recommendations.",
     tech: ["Next.js", "Stripe", "PostgreSQL", "Redis"],
-    gradient: "from-pink-600 via-rose-600 to-red-700",
+    gradient: "from-blue-600 via-blue-700 to-slate-900",
   },
   {
     id: 3,
     title: "Orion Social", category: "Mobile / Social",
     description: "A minimalist social platform focused on meaningful connections through shared creative experiences.",
     tech: ["React Native", "Firebase", "GraphQL", "Expo"],
-    gradient: "from-amber-500 via-orange-600 to-red-600",
+    gradient: "from-slate-700 via-blue-800 to-slate-900",
   },
   {
     id: 4,
     title: "Prism Design System", category: "Design / Component Library",
     description: "Comprehensive design system with 200+ components, accessibility-first approach, and Figma integration.",
     tech: ["Storybook", "React", "Tailwind", "Figma API"],
-    gradient: "from-emerald-500 via-teal-600 to-cyan-700",
+    gradient: "from-blue-500 via-blue-700 to-blue-900",
   },
   {
     id: 5,
     title: "Aether AI Platform", category: "AI / Machine Learning",
     description: "No-code AI training platform that lets teams build, deploy, and monitor custom ML models.",
     tech: ["Python", "TensorFlow", "FastAPI", "React"],
-    gradient: "from-blue-600 via-indigo-600 to-violet-700",
+    gradient: "from-blue-600 via-blue-800 to-slate-900",
   },
 ];
 
@@ -106,7 +106,7 @@ export default function Home() {
     <>
       <LoadingScreen />
 
-      <motion.div className="fixed top-0 left-0 right-0 h-[3px] z-50 origin-left" style={{ scaleX: smoothProgress, backgroundColor: "#111" }} />
+      <motion.div className="fixed top-0 left-0 right-0 h-[3px] z-50 origin-left" style={{ scaleX: smoothProgress, backgroundColor: "#4a7bc4" }} />
 
       <motion.nav
         className="fixed top-6 left-1/2 -translate-x-1/2 z-40"
@@ -124,7 +124,7 @@ export default function Home() {
             <button key={item} onClick={() => scrollToSection(idx)}
               style={{
                 fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase",
-                fontWeight: 500, color: activeSection === idx ? "#111" : "#999",
+                fontWeight: 500, color: activeSection === idx ? "#0b1d3a" : "#9aa7bd",
                 background: "none", border: "none", cursor: "pointer", transition: "color 0.3s",
               }}
             >
@@ -140,7 +140,7 @@ export default function Home() {
         {/* ════════ SECTION 0 — Studio ════════ */}
         <section style={{
           width: "100vw", minHeight: "100vh", flexShrink: 0, display: "flex",
-          backgroundColor: "#ffffff", color: "#111",
+          backgroundColor: "#ffffff", color: "#0b1d3a",
           fontFamily: '"Inter","Helvetica Neue",Arial,sans-serif',
         }}>
           <div style={{
@@ -151,32 +151,32 @@ export default function Home() {
               style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "32px" }}>
               {["About", "Projects", "Contact"].map((item, i) => (
                 <span key={item}>
-                  <span style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#111", fontWeight: 500 }}>{item}</span>
-                  {i < 2 && <span style={{ marginLeft: "20px", color: "#999", fontSize: "8px" }}>•</span>}
+                  <span style={{ fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#0b1d3a", fontWeight: 500 }}>{item}</span>
+                  {i < 2 && <span style={{ marginLeft: "20px", color: "#9aa7bd", fontSize: "8px" }}>•</span>}
                 </span>
               ))}
             </motion.div>
 
             <motion.div initial="hidden" animate={mounted ? "show" : "hidden"} variants={fadeUp(1)}
               style={{ marginBottom: "60px", display: "flex", alignItems: "center", gap: "12px" }}>
-              <span style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#888", fontWeight: 500, whiteSpace: "nowrap" }}>Latest —</span>
-              <span style={{ fontSize: "13px", color: "#444", fontWeight: 400, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>New identity system for Orbital — launched 2026</span>
+              <span style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "#7c97c0", fontWeight: 500, whiteSpace: "nowrap" }}>Latest —</span>
+              <span style={{ fontSize: "13px", color: "#44526b", fontWeight: 400, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>New identity system for Orbital — launched 2026</span>
             </motion.div>
 
             <motion.h1 initial="hidden" animate={mounted ? "show" : "hidden"} variants={fadeUp(2)}
-              style={{ fontSize: "clamp(72px, 10vw, 180px)", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-0.04em", color: "#111", margin: "0 0 32px 0" }}>
+              style={{ fontSize: "clamp(72px, 10vw, 180px)", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-0.04em", color: "#0b1d3a", margin: "0 0 32px 0" }}>
               Studio<br />Arsy
             </motion.h1>
 
             <motion.p initial="hidden" animate={mounted ? "show" : "hidden"} variants={fadeUp(3)}
-              style={{ fontSize: "15px", lineHeight: 1.7, color: "#555", maxWidth: "480px", fontWeight: 400, margin: "0 0 40px 0" }}>
+              style={{ fontSize: "15px", lineHeight: 1.7, color: "#44526b", maxWidth: "480px", fontWeight: 400, margin: "0 0 40px 0" }}>
               A design-led creative studio crafting digital products, brand identities, and immersive experiences for forward-thinking companies worldwide.
             </motion.p>
 
             <motion.button initial="hidden" animate={mounted ? "show" : "hidden"} variants={fadeUp(4)}
               onClick={() => scrollToSection(1)}
               style={{
-                alignSelf: "flex-start", padding: "14px 36px", borderRadius: "999px", background: "#111", color: "#fff",
+                alignSelf: "flex-start", padding: "14px 36px", borderRadius: "999px", background: "#0b1d3a", color: "#fff",
                 border: "none", fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500, cursor: "pointer",
               }}
             >
@@ -184,7 +184,7 @@ export default function Home() {
             </motion.button>
           </div>
 
-          <div ref={parallaxRef} style={{ width: "35%", position: "relative", overflow: "hidden", backgroundColor: "#f0f0f0" }}>
+          <div ref={parallaxRef} style={{ width: "35%", position: "relative", overflow: "hidden", backgroundColor: "#e8eef6" }}>
             <div style={{
               position: "absolute", inset: 0,
               backgroundImage: "url('https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=2574&auto=format&fit=crop')",
@@ -217,10 +217,10 @@ export default function Home() {
         <section style={{
           width: "100vw", minHeight: "100vh", flexShrink: 0,
           display: "flex", flexDirection: "column", justifyContent: "center", gap: "32px",
-          background: "#0a0a0a", color: "#f5f5f5", padding: "0 6rem",
+          background: "#0a1628", color: "#f8fafc", padding: "0 6rem",
         }}>
           <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <span style={{ fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#a78bfa", marginBottom: "12px", display: "block" }}>Selected Work</span>
+            <span style={{ fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#4a7bc4", marginBottom: "12px", display: "block" }}>Selected Work</span>
             <h2 style={{ fontSize: "clamp(40px, 5vw, 72px)", fontWeight: 700, margin: 0 }}>Featured Projects</h2>
           </motion.div>
 
@@ -249,12 +249,12 @@ export default function Home() {
                     </span>
                   </div>
                   <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <span style={{ fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#a78bfa", marginBottom: "8px" }}>{project.category}</span>
+                    <span style={{ fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#4a7bc4", marginBottom: "8px" }}>{project.category}</span>
                     <h3 style={{ fontSize: "22px", fontWeight: 700, margin: "0 0 8px 0" }}>{project.title}</h3>
-                    <p style={{ fontSize: "13px", lineHeight: 1.6, color: "#999", margin: "0 0 16px 0", flex: 1 }}>{project.description}</p>
+                    <p style={{ fontSize: "13px", lineHeight: 1.6, color: "#9aa7bd", margin: "0 0 16px 0", flex: 1 }}>{project.description}</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                       {project.tech.map((t) => (
-                        <span key={t} style={{ padding: "4px 12px", borderRadius: "999px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.05)", fontSize: "11px", color: "#888" }}>{t}</span>
+                        <span key={t} style={{ padding: "4px 12px", borderRadius: "999px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.05)", fontSize: "11px", color: "#b8c4d6" }}>{t}</span>
                       ))}
                     </div>
                   </div>
@@ -268,7 +268,7 @@ export default function Home() {
         <section style={{
           width: "100vw", minHeight: "100vh", flexShrink: 0,
           display: "flex", alignItems: "center", justifyContent: "center",
-          background: "#0a0a0a", padding: "0 6rem",
+          background: "#0a1628", padding: "0 6rem",
         }}>
           <Skills />
         </section>
@@ -277,7 +277,7 @@ export default function Home() {
         <section style={{
           width: "100vw", minHeight: "100vh", flexShrink: 0,
           display: "flex", alignItems: "center", justifyContent: "center",
-          background: "#0a0a0a", padding: "0 6rem",
+          background: "#0a1628", padding: "0 6rem",
         }}>
           <Contact />
         </section>
@@ -286,15 +286,15 @@ export default function Home() {
       <footer style={{
         position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 30,
         padding: "16px 80px", borderTop: "1px solid rgba(255,255,255,0.06)",
-        background: "rgba(10,10,10,0.85)", backdropFilter: "blur(12px)",
+        background: "rgba(10,22,40,0.85)", backdropFilter: "blur(12px)",
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        fontSize: "11px", color: "#666", letterSpacing: "0.05em",
+        fontSize: "11px", color: "#9aa7bd", letterSpacing: "0.05em",
         fontFamily: '"Inter","Helvetica Neue",Arial,sans-serif',
       }}>
         <span>&copy; {new Date().getFullYear()} Studio Arsy</span>
         <div style={{ display: "flex", gap: "24px" }}>
           {["GitHub", "Instagram", "LinkedIn"].map((s) => (
-            <a key={s} href="#" style={{ color: "#666", textDecoration: "none", textTransform: "uppercase" }}>{s}</a>
+            <a key={s} href="#" style={{ color: "#9aa7bd", textDecoration: "none", textTransform: "uppercase" }}>{s}</a>
           ))}
         </div>
       </footer>

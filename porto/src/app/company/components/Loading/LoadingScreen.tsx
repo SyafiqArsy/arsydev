@@ -8,16 +8,12 @@ export default function LoadingScreen() {
   const [render, setRender] = useState(true);
 
   useEffect(() => {
-    // Lock scroll
     document.body.style.overflow = "hidden";
 
-    // Total timeline: line anim (1.8s) + pause (0.3s) + fade (0.5s)
     const total = 1800 + 300 + 500;
-
     const timer = setTimeout(() => {
       setShow(false);
       document.body.style.overflow = "";
-      // Wait for fade-out animation before unmounting
       setTimeout(() => setRender(false), 500);
     }, total);
 
@@ -40,7 +36,6 @@ export default function LoadingScreen() {
         style={{ pointerEvents: show ? "auto" : "none" }}
       >
         <div className="relative w-full" style={{ paddingLeft: "6rem" }}>
-          {/* "Loading" text */}
           <span
             className="block mb-3"
             style={{
@@ -54,7 +49,6 @@ export default function LoadingScreen() {
             Loading
           </span>
 
-          {/* Animated horizontal line */}
           <motion.div
             className="h-[2px] bg-[#0b1d3a] origin-left"
             initial={{ scaleX: 0 }}
