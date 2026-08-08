@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import LoadingScreen from "@/components/animations/LoadingScreen";
+import ScrollExpandIntro from "@/components/animations/ScrollExpandIntro";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -15,7 +17,19 @@ import { useHorizontalScroll } from "@/hooks/useHorizontalScroll";
 
 const TOTAL_SECTIONS = 4;
 
+type IntroPhase = "loading" | "expand" | "landing";
+
 export default function Home() {
+  const [phase, setPhase] = useState<IntroPhase>("loading");
+
+  // Scroll terkunci selama loading & scroll-expand intro berlangsung.
+  useEffect(() => {
+    document.body.style.overflow = phase === "landing" ? "" : "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [phase]);
+
   const {
     tunnelRef,
     trackX,
@@ -26,13 +40,21 @@ export default function Home() {
 
   return (
     <>
-      <LoadingScreen />
+      {phase === "loading" ? (
+        <LoadingScreen onDone={() => setPhase("expand")} />
+      ) : null}
 
-      <Navbar
-        progress={smoothProgress}
-        activeSection={activeSection}
-        scrollToSection={scrollToSection}
-      />
+      {phase === "expand" ? (
+        <ScrollExpandIntro onDone={() => setPhase("landing")} />
+      ) : null}
+
+      {phase !== "loading" ? (
+        <Navbar
+          progress={smoothProgress}
+          activeSection={activeSection}
+          scrollToSection={scrollToSection}
+        />
+      ) : null}
 
       <div
         ref={tunnelRef}

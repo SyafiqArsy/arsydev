@@ -3,29 +3,30 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function LoadingScreen() {
+interface LoadingScreenProps {
+  /** Dipanggil setelah fade-out loading. Biasanya untuk menyambungkan ke intro berikutnya. */
+  onDone?: () => void;
+}
+
+export default function LoadingScreen({ onDone }: LoadingScreenProps = {}) {
   const [show, setShow] = useState(true);
   const [render, setRender] = useState(true);
 
   useEffect(() => {
-    // Lock scroll
-    document.body.style.overflow = "hidden";
-
     // Total timeline: line anim (1.8s) + pause (0.3s) + fade (0.5s)
     const total = 1800 + 300 + 500;
 
     const timer = setTimeout(() => {
       setShow(false);
-      document.body.style.overflow = "";
       // Wait for fade-out animation before unmounting
-      setTimeout(() => setRender(false), 500);
+      setTimeout(() => {
+        setRender(false);
+        onDone?.();
+      }, 500);
     }, total);
 
-    return () => {
-      clearTimeout(timer);
-      document.body.style.overflow = "";
-    };
-  }, []);
+    return () => clearTimeout(timer);
+  }, [onDone]);
 
   if (!render) return null;
 
