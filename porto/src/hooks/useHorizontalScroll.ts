@@ -37,9 +37,10 @@ export function useHorizontalScroll(totalSections: number): UseHorizontalScrollR
   }, [smoothProgress, totalSections]);
 
   const scrollToSection = (idx: number) => {
-    if (!tunnelRef.current) return;
-    const target = (idx / (totalSections - 1)) * (tunnelRef.current.scrollHeight - window.innerHeight);
-    tunnelRef.current.scrollTo({ top: target, behavior: "smooth" });
+    const clamped = Math.min(Math.max(idx, 0), totalSections - 1);
+    // Scroll window: section idx berada di posisi idx/total pada tunnel.
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    window.scrollTo({ top: (clamped / (totalSections - 1)) * maxScroll, behavior: "smooth" });
   };
 
   return { tunnelRef, trackX, smoothProgress, activeSection, scrollToSection };

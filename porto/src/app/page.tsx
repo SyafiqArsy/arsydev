@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import LoadingScreen from "@/components/animations/LoadingScreen";
 import ScrollExpandIntro from "@/components/animations/ScrollExpandIntro";
-import Navbar from "@/components/layout/Navbar";
+import NavMenu from "@/components/layout/NavMenu";
 import Footer from "@/components/layout/Footer";
 
 import HeroSection from "@/components/sections/HeroSection";
@@ -33,7 +33,6 @@ export default function Home() {
   const {
     tunnelRef,
     trackX,
-    smoothProgress,
     activeSection,
     scrollToSection,
   } = useHorizontalScroll(TOTAL_SECTIONS);
@@ -49,8 +48,7 @@ export default function Home() {
       ) : null}
 
       {phase !== "loading" ? (
-        <Navbar
-          progress={smoothProgress}
+        <NavMenu
           activeSection={activeSection}
           scrollToSection={scrollToSection}
         />

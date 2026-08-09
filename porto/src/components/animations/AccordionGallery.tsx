@@ -41,7 +41,7 @@ interface AccordionGalleryProps {
   trigger?: "hover" | "click";
   /** Height of the row (width of the column when vertical). */
   height?: number;
-  /** Gap between panels, in pixels. */
+  /** Gap between panels, in pixels of course. */
   gap?: number;
   /** Corner radius of each panel, in pixels. */
   radius?: number;
