@@ -1,205 +1,101 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
-import OptionWheel from "@/components/animations/OptionWheel";
+import StaggeredMenu, {
+  type StaggeredMenuItem,
+} from "@/components/animations/StaggeredMenu";
+import { getLenis } from "@/lib/smoothScroll";
 
 interface NavMenuProps {
   /** Section yang sedang aktif (0–3). */
-  activeSection: number;
+  readonly activeSection: number;
   /** Scroll ke section tujuan. */
-  scrollToSection: (idx: number) => void;
+  readonly scrollToSection: (idx: number) => void;
+  /** Konten utama (Track A + Track B) — diblur saat menu terbuka. */
+  readonly contentRef: React.RefObject<HTMLElement | null>;
 }
 
-const sectionLabels = ["Studio", "Projects", "Skills", "Contact"];
+/** Menu item → index section (urutan: Studio, Projects, Skills, Contact). */
+const sectionItems: StaggeredMenuItem[] = [
+  { label: "Studio", ariaLabel: "Go to Studio", link: "#studio" },
+  { label: "Projects", ariaLabel: "Go to Projects", link: "#projects" },
+  { label: "Skills", ariaLabel: "Go to Skills", link: "#skills" },
+  { label: "Contact", ariaLabel: "Go to Contact", link: "#contact" },
+];
 
-/** Pilihan pada OptionWheel memetakan 1:1 ke index section. */
-const wheelItems = sectionLabels;
+const socialItems = [
+  { label: "GitHub", link: "https://github.com" },
+  { label: "Instagram", link: "https://instagram.com" },
+  { label: "LinkedIn", link: "https://linkedin.com" },
+];
 
-export default function NavMenu({ activeSection, scrollToSection }: NavMenuProps) {
+export default function NavMenu({
+  activeSection,
+  scrollToSection,
+  contentRef,
+}: NavMenuProps) {
+  // Hamburger muncul setelah melewati halaman Project (activeSection >= 1),
+  // lalu latch (tetap tampil meski scroll balik). Render-phase update dengan
+  // guard — pola derived-state, tanpa setState di effect.
+  const [pastProjects, setPastProjects] = useState(activeSection >= 1);
+  if (activeSection >= 1 && !pastProjects) {
+    setPastProjects(true);
+  }
   const [open, setOpen] = useState(false);
-  // Opsi yang sedang disorot roda (belum tentu tujuan navigasi).
-  const [selected, setSelected] = useState(
-    Math.min(Math.max(activeSection, 0), wheelItems.length - 1),
-  );
+  const visible = pastProjects || open;
 
-  // Hamburger muncul setelah melewati halaman Project (activeSection >= 1).
-  // Latch via useEffect (setelah commit) — bukan render-phase, agar tak
-  // memicu render restart yang bisa membuat AnimatePresence mount race.
-  const [visible, setVisible] = useState(activeSection >= 1);
+  // Konten utama diblur saat menu terbuka.
   useEffect(() => {
-    if (activeSection >= 1 && !visible) {
-      setVisible(true);
+    const el = contentRef.current;
+    if (!el) return;
+    el.classList.toggle("nav-blur", open);
+    return () => el.classList.remove("nav-blur");
+  }, [open, contentRef]);
+
+  // Kunci scroll (body + Lenis) saat terbuka. Escape ditangani StaggeredMenu
+  // (di sana → onMenuClose → setOpen(false) → blok ini melepas kunci).
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+      getLenis()?.stop();
     }
-  }, [activeSection, visible]);
-
-  // Freeze scroll halaman saat menu terbuka, dan tutup dengan tombol Escape.
-  useEffect(() => {
-    if (!open) return;
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
+      getLenis()?.start();
     };
   }, [open]);
 
-  // Scroll/drag roda hanya meng-update sorotan — belum navigasi.
-  const handleSelect = (idx: number) => {
-    setSelected(idx);
-  };
-
-  // Navigasi via klik: tutup sidebar lalu gulir ke section tujuan.
-  const goTo = (idx: number) => {
+  // Navigasi: buka kunci scroll & restart Lenis DULU (baru scroll berjalan),
+  // tutup menu (StaggeredMenu tutup internal → onMenuClose), lalu gulir.
+  // index = urutan sectionItems (0-3).
+  const handleItemClick = (_item: StaggeredMenuItem, idx: number) => {
+    document.body.style.overflow = "";
+    getLenis()?.start();
     setOpen(false);
     scrollToSection(idx);
   };
 
-  return (
-    <>
-      {/* Hamburger — kanan atas, muncul (fade + slide) setelah masuk Projects */}
-      {visible && (
-        <button
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          style={{
-            position: "fixed",
-            top: "24px",
-            right: "28px",
-            zIndex: 80,
-            width: "52px",
-            height: "52px",
-            borderRadius: "999px",
-            background: "rgba(10,22,40,0.7)",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255,255,255,0.14)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "6px",
-            cursor: "pointer",
-            animation: "navmenu-drop 0.4s cubic-bezier(0.25, 0, 0, 1)",
-          }}
-        >
-          <span
-            style={{
-              width: "22px",
-              height: "2px",
-              borderRadius: "2px",
-              background: "#fff",
-              transform: open ? "translateY(4px) rotate(45deg)" : "none",
-              transition: "transform 0.35s ease",
-            }}
-          />
-          <span
-            style={{
-              width: "22px",
-              height: "2px",
-              borderRadius: "2px",
-              background: "#fff",
-              opacity: open ? 0 : 1,
-              transform: open ? "translateX(20px)" : "none",
-              transition: "opacity 0.25s ease, transform 0.35s ease",
-            }}
-          />
-          <span
-            style={{
-              width: "22px",
-              height: "2px",
-              borderRadius: "2px",
-              background: "#fff",
-              transform: open ? "translateY(-4px) rotate(-45deg)" : "none",
-              transition: "transform 0.35s ease",
-            }}
-          />
-        </button>
-      )}
+  if (!visible) return null;
 
-      {/* Sidebar dari kanan berisi OptionWheel (conditional mount — tanpa
-          AnimatePresence exit; tutup = unmount langsung, tak ada mount race) */}
-      {open && (
-        <motion.div
-          className="fixed top-0 bottom-0 right-0 z-[70]"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          transition={{ type: "tween", duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div
-            style={{
-              width: "min(440px, 100vw)",
-              height: "100%",
-              background: "#0a1628",
-              borderLeft: "1px solid rgba(255,255,255,0.08)",
-              position: "relative",
-            }}
-          >
-            <OptionWheel
-              items={wheelItems}
-              defaultSelected={selected}
-              textColor="#a6a6a6"
-              activeColor="#ffffff"
-              side="right"
-              fontSize={2.6}
-              spacing={1.5}
-              curve={1}
-              tilt={6}
-              blur={2}
-              fade={0.3}
-              inset={88}
-              draggable
-              onChange={(idx) => handleSelect(idx)}
-              onSelect={(idx) => goTo(idx)}
-            />
-            <div
-              style={{
-                position: "absolute",
-                right: "88px",
-                bottom: "40px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "14px",
-                alignItems: "flex-end",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "#7c97c0",
-                }}
-              >
-                Selected: {sectionLabels[selected]}
-              </span>
-              <button
-                type="button"
-                onClick={() => goTo(selected)}
-                style={{
-                  padding: "12px 34px",
-                  borderRadius: "999px",
-                  background: "#fff",
-                  color: "#0a1628",
-                  border: "none",
-                  fontSize: "11px",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Go
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </>
+  return (
+    <StaggeredMenu
+      className="navmenu-staggered"
+      position="right"
+      isFixed
+      items={sectionItems}
+      socialItems={socialItems}
+      displaySocials
+      displayItemNumbering
+      logoUrl="/logo-arsy.svg"
+      menuButtonColor="#ffffff"
+      openMenuButtonColor="#0a1628"
+      accentColor="#5227FF"
+      colors={["#B497CF", "#5227FF"]}
+      changeMenuColorOnOpen
+      onMenuOpen={() => setOpen(true)}
+      onMenuClose={() => setOpen(false)}
+      onItemClick={handleItemClick}
+    />
   );
 }

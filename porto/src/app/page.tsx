@@ -58,6 +58,9 @@ export default function Home() {
     };
   }, [phase]);
 
+  // Konten utama (Track A + Track B) — diblur saat StaggeredMenu terbuka.
+  const contentRef = useRef<HTMLElement | null>(null);
+
   // Kontainer reveal — dimundurkan transisi GSAP (Stack → Contact).
   const servicesRef = useRef<HTMLDivElement | null>(null);
 
@@ -93,12 +96,17 @@ export default function Home() {
       ) : null}
 
       {phase !== "loading" ? (
-        <NavMenu activeSection={activeSection} scrollToSection={goToSection} />
+        <NavMenu
+          activeSection={activeSection}
+          scrollToSection={goToSection}
+          contentRef={contentRef}
+        />
       ) : null}
 
       {/* Hanya saat landing: Lenis aktif sebagai driver scroll halaman. */}
       {phase === "landing" ? <SmoothScroll /> : null}
 
+      <main ref={contentRef}>
       {/* Track A — horizontal: Hero, Projects, Skills.
           Wrapper = scroll-room 300vh (sticky section menahan 200vh),
           kemudian release; tidak ada GSAP pin-spacer (React DOM konsisten). */}
@@ -127,6 +135,7 @@ export default function Home() {
         <ContactSection />
       </PageRevealTransition>
 
+      </main>
       <Footer />
     </>
   );

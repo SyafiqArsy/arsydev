@@ -41,6 +41,12 @@ body {
   color: #fff;
 }
 
+/* Konten utama diblur saat StaggeredMenu terbuka (dipakai NavMenu). */
+.nav-blur {
+  filter: blur(6px);
+  transition: filter 0.35s ease;
+}
+
 /* Wrapper memberi scroll-room: 200vh range "terpin" + 100vh release.
    Dipakai sebagai trigger ScrollTrigger (scrub tanpa pin). */
 .horizontal-wrap {
