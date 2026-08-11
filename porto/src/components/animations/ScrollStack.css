@@ -61,27 +61,25 @@
 
 .services-stack-section .scroll-stack-card {
   height: auto;
-  min-height: 62vh;
-  margin: 0 0 5rem;
-  padding: 3.5rem;
-  border-radius: 40px;
-  /* Kartu solid (bukan rgba + backdrop-filter) — tak tembus pandang ke baliknya. */
+  min-height: 100vh; /* Layer full-viewport */
+  width: 100%;
+  margin: 0;
+  padding: 6rem 6rem 0; /* 0 bawah → konten atas, ruang layer besar */
+  border-radius: 0;
+  /* Layer solid full-width — tak tembus pandang ke baliknya. */
   background: linear-gradient(145deg, #16264a 0%, #0c1a30 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 24px 60px rgba(2, 8, 24, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.services-stack-section .scroll-stack-card:hover {
-  border-color: rgba(59, 130, 246, 0.45);
+  border: none;
+  box-shadow: none;
+  display: flex;
+  align-items: flex-start;
 }
 
 .services-card-inner {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.6rem;
   height: 100%;
+  width: 100%;
 }
 
 .services-card-head {

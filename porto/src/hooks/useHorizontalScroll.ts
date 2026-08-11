@@ -52,7 +52,7 @@ export function useHorizontalScroll(
         trigger: wrapEl,
         start: "top top",
         end: "bottom bottom",
-        scrub: 1,
+        scrub: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const idx = Math.min(

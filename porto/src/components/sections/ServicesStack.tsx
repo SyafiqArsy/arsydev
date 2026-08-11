@@ -107,7 +107,7 @@ export default function ServicesStack() {
         itemDistance={140}
         itemScale={0.04}
         itemStackDistance={42}
-        stackPosition="15%"
+        stackPosition="0%"
         scaleEndPosition="5%"
         baseScale={0.9}
       >

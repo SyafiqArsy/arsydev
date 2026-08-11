@@ -17,12 +17,14 @@ gsap.registerPlugin(ScrollTrigger);
 export default function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.075,
-      wheelMultiplier: 0.75,
-      touchMultiplier: 1.2,
+      // Tajam: lerp 1 = tanpa inersia (scroll langkah asli), wheel 1:1.
+      // Halaman berhenti tegas per notch — tak melayang lagi.
+      lerp: 1,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
       syncTouch: true,
-      syncTouchLerp: 0.09,
-      duration: 1.4,
+      syncTouchLerp: 0.05,
+      duration: 1.2,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
       autoToggle: true,
       // Intro ScrollExpand punya scroller internal sendiri — jangan dibajak.
