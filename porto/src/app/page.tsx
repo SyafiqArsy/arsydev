@@ -112,15 +112,14 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Track B — vertikal: ScrollStack + Contact. Ditarik ke atas 100vh
-          agar mulai PERSIS di ujung wrapper (scrollY 200vh) — reveal "top top"
-          fire saat release sticky, tanpa celah. */}
+      {/* Track B — vertikal: ScrollStack + Contact. Mulai di posisi normal
+          (300vh) — Skills selesai terpin di 200vh, lalu ter-scroll 200→300vh
+          sehingga terlihat PENUH dulu, baru Track B muncul & stack beranimasi. */}
       <PageRevealTransition
         frontRef={wrapRef}
         containerRef={servicesRef}
         zIndex={30}
         start="top top"
-        style={{ marginTop: "-100vh" }}
       >
         <ServicesStack />
       </PageRevealTransition>
