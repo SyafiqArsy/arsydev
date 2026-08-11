@@ -1,0 +1,152 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+.scroll-stack-inner {
+  padding: 20vh 5rem 50rem;
+  min-height: 100vh;
+}
+
+.scroll-stack-card-wrapper {
+  position: relative;
+}
+
+.scroll-stack-card {
+  transform-origin: top center;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  height: 20rem;
+  width: 100%;
+  margin: 30px 0;
+  padding: 3rem;
+  border-radius: 40px;
+  box-sizing: border-box;
+  /* Improve mobile performance */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  position: relative;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}
+
+/* ---- Services stack cards (custom, dark navy theme) ---- */
+.services-stack-section {
+  overflow: hidden;
+}
+
+.services-stack-section .scroll-stack-scroller {
+  height: auto;
+  overflow: visible;
+  overscroll-behavior: auto;
+}
+
+.services-stack-section .scroll-stack-inner {
+  padding: 0;
+  min-height: auto;
+}
+
+.services-stack-section .scroll-stack-card {
+  height: auto;
+  min-height: 62vh;
+  margin: 0 0 5rem;
+  padding: 3.5rem;
+  border-radius: 40px;
+  background: linear-gradient(
+    145deg,
+    rgba(22, 38, 66, 0.85),
+    rgba(12, 26, 48, 0.9)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 24px 60px rgba(2, 8, 24, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+.services-stack-section .scroll-stack-card:hover {
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+.services-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  height: 100%;
+}
+
+.services-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.services-card-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.services-card-number {
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: #47597d;
+}
+
+.services-card-title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.services-card-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 44rem;
+}
+
+.services-card-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: auto;
+}
+
+.services-card-tags li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.services-card-tags li svg {
+  color: #3b82f6;
+}

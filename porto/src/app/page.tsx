@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import LoadingScreen from "@/components/animations/LoadingScreen";
@@ -12,10 +12,12 @@ import HeroSection from "@/components/sections/HeroSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import ContactSection from "@/components/sections/ContactSection";
+import ServicesStack from "@/components/sections/ServicesStack";
 
+import PageRevealTransition from "@/components/animations/PageRevealTransition";
 import { useHorizontalScroll } from "@/hooks/useHorizontalScroll";
 
-const TOTAL_SECTIONS = 4;
+const TOTAL_SECTIONS = 3;
 
 const INTRO_FLAG = "arsydev.intro.played";
 
@@ -32,8 +34,6 @@ type IntroPhase = "loading" | "expand" | "landing";
 
 export default function Home() {
   // Baca flag sesi awal render (lazy) agar refresh langsung ke landing tanpa kedip layar.
-  // Tidak ada cara client penanda "hard refresh": reload mempertahankan sessionStorage,
-  // jadi refresh apa pun melewatkan intro — persis yang diminta.
   const [playedOnce] = useState(hasPlayedIntro);
   const [phase, setPhase] = useState<IntroPhase>(playedOnce ? "landing" : "loading");
 
@@ -61,14 +61,17 @@ export default function Home() {
     scrollToSection,
   } = useHorizontalScroll(TOTAL_SECTIONS);
 
+  // Referensi wrapper horizontal (Track A) — dimundurkan oleh transisi GSAP.
+  const horizontalTrackRef = useRef<HTMLDivElement | null>(null);
+  // Referensi ScrollStack — dimundurkan oleh transisi kedua (Stack → Contact).
+  const servicesStackRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <>
       {!playedOnce && phase !== "landing" ? (
         <>
           <LoadingScreen onDone={() => setPhase("expand")} />
-          {/* Intro di-mount SEJAK loading & di baliknya (z-9000 < z-9999).
-              Fade-in-nya rampung di balik layar loading, jadi saat loading fade-out,
-              intro sudah opak penuh — tidak ada kelebat landing page. */}
+          {/* Intro di-mount SEJAK loading & di baliknya (z-9000 < z-9999). */}
           <ScrollExpandIntro onDone={() => setPhase("landing")} />
         </>
       ) : null}
@@ -80,25 +83,36 @@ export default function Home() {
         />
       ) : null}
 
+      {/* Scroll tunnel — spacer untuk ruang scroll horizontal (3 section) */}
       <div
         ref={tunnelRef}
         style={{ height: `${(TOTAL_SECTIONS - 1) * 100}vh` }}
       />
 
+      {/* Track A — horizontal: Hero, Projects, Skills (fixed, dimundurkan transisi) */}
       <motion.div
+        ref={horizontalTrackRef}
         className="horizontal-track"
-        style={{ x: trackX }}
+        style={{ x: trackX, zIndex: 20, position: "fixed" }}
       >
         <HeroSection
           scrollToProjects={() => scrollToSection(1)}
         />
-
         <ProjectsSection />
-
         <SkillsSection />
-
-        <ContactSection />
       </motion.div>
+
+      {/* Track B — vertikal: ScrollStack + Contact, di flow dokumen setelah tunnel */}
+      <PageRevealTransition
+        frontRef={horizontalTrackRef}
+        containerRef={servicesStackRef}
+        zIndex={30}
+      >
+        <ServicesStack />
+      </PageRevealTransition>
+      <PageRevealTransition frontRef={servicesStackRef} zIndex={50}>
+        <ContactSection />
+      </PageRevealTransition>
 
       <Footer />
     </>
