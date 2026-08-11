@@ -6,7 +6,6 @@
   overflow-x: visible;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: scroll-position;
@@ -66,16 +65,12 @@
   margin: 0 0 5rem;
   padding: 3.5rem;
   border-radius: 40px;
-  background: linear-gradient(
-    145deg,
-    rgba(22, 38, 66, 0.85),
-    rgba(12, 26, 48, 0.9)
-  );
+  /* Kartu solid (bukan rgba + backdrop-filter) — tak tembus pandang ke baliknya. */
+  background: linear-gradient(145deg, #16264a 0%, #0c1a30 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 24px 60px rgba(2, 8, 24, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
 }
 
 .services-stack-section .scroll-stack-card:hover {

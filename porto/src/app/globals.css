@@ -6,10 +6,6 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: #0a1628;
   color: #f8fafc;
@@ -45,12 +41,29 @@ body {
   color: #fff;
 }
 
-/* The scroll tunnel — a tall spacer that creates scrollable room,
-   while the actual content stacks horizontally and gets translated via JS */
-.horizontal-track {
-  position: fixed;
+/* Wrapper memberi scroll-room: 200vh range "terpin" + 100vh release.
+   Dipakai sebagai trigger ScrollTrigger (scrub tanpa pin). */
+.horizontal-wrap {
+  position: relative;
+  height: 300vh;
+  background: #0a1628;
+}
+
+/* Section horizontal — di-sticky CSS (bukan GSAP pin). Sticky native TIDAK
+   membungkus/reparent node React → DOM React tetap konsisten (tanpa error
+   insertBefore). Stick untuk scrollY 0→200vh, lalu release normal. */
+.horizontal-pin {
+  position: sticky;
   top: 0;
-  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Track horizontal — flex lebar konten, di-translate GSAP pin */
+.horizontal-track {
+  position: relative;
+  width: max-content;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -88,6 +101,12 @@ body {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Hamburger nav masuk — pengganti motion initial/animate (hindari mount race) */
+@keyframes navmenu-drop {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-float {

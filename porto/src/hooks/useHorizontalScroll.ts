@@ -1,47 +1,104 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { useLayoutEffect, useRef, useState, type RefObject } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import { smoothScrollTo } from "@/lib/smoothScroll";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface UseHorizontalScrollReturn {
-  tunnelRef: React.RefObject<HTMLDivElement | null>;
-  trackX: MotionValue<string>;
-  smoothProgress: MotionValue<number>;
+  /** Wrapper scroll-room (300vh) — trigger ScrollTrigger. */
+  wrapRef: RefObject<HTMLDivElement | null>;
+  /** Track flex yang di-translate horizontal. */
+  trackRef: RefObject<HTMLDivElement | null>;
+  /** Section aktif untuk nav (0-2 horizontal, 3 = post-pin/Contact). */
   activeSection: number;
+  /** Smooth scroll ke section horizontal (idx 0-2). */
   scrollToSection: (idx: number) => void;
 }
 
 /**
- * Mengelola "scroll tunnel" vertikal + terjemahan horizontal antar section.
+ * Menggerakkan track horizontal via ScrollTrigger scrub — TANPA GSAP pin.
  *
- * - Membuat elemen spacer setinggi `(totalSections - 1) * 100vh` untuk ruang scroll.
- * - `trackX` mentranslasikan track horizontal sebesar satu viewport per section.
- * - `activeSection` mengikuti progress scroll untuk menandai nav aktif.
- * - `scrollToSection(idx)` melakukan smooth scroll ke section tujuan.
+ * CSS `position:sticky` pada `.horizontal-pin` (top:0) menahan section selama
+ * scroll wrapper (0→200vh), jadi tidak ada GSAP pin-spacer yang membungkus
+ * node React (sumber DOM inconsistency / insertBefore error). ScrollTrigger
+ * hanya men-scrub translate track -200vw sepanjang wrapper.
  */
-export function useHorizontalScroll(totalSections: number): UseHorizontalScrollReturn {
+export function useHorizontalScroll(
+  totalSections: number,
+  onPostPinRef?: RefObject<HTMLElement | null>,
+): UseHorizontalScrollReturn {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const [activeSection, setActiveSection] = useState(0);
+  const lastSectionRef = useRef(0);
 
-  // Tunnel: 4 section → 3 viewport tinggi → setiap scroll "halaman" memajukan 1 section.
-  const tunnelRef = useRef<HTMLDivElement | null>(null);
+  useLayoutEffect(() => {
+    const wrapEl = wrapRef.current;
+    const trackEl = trackRef.current;
+    if (!wrapEl || !trackEl) return;
 
-  const { scrollYProgress } = useScroll({ target: tunnelRef, offset: ["start start", "end end"] });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 25, restDelta: 0.001 });
-  const trackX = useTransform(smoothProgress, [0, 1], ["0vw", `-${(totalSections - 1) * 100}vw`]);
+    const dist = () => Math.max(0, trackEl.offsetWidth - window.innerWidth);
 
-  useEffect(() => {
-    return smoothProgress.on("change", (latest) => {
-      const idx = Math.round(latest * (totalSections - 1));
-      setActiveSection(idx);
+    // Scrub horizontal TANPA pin: translate track sepanjang wrapper.
+    // Sticky CSS sudah menahan section; ScrollTrigger hanya menggeser track.
+    const tween = gsap.to(trackEl, {
+      x: () => -dist(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: wrapEl,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const idx = Math.min(
+            totalSections - 1,
+            Math.round(self.progress * (totalSections - 1)),
+          );
+          if (lastSectionRef.current !== idx) {
+            lastSectionRef.current = idx;
+            setActiveSection(idx);
+          }
+        },
+      },
     });
-  }, [smoothProgress, totalSections]);
+
+    const st = tween.scrollTrigger;
+
+    // Trigger kedua: section post-pin (Services) mulai di viewport
+    // (tepat saat release sticky, scrollY = 200vh) → nav Contact aktif.
+    const markSection = (idx: number) => {
+      if (lastSectionRef.current !== idx) {
+        lastSectionRef.current = idx;
+        setActiveSection(idx);
+      }
+    };
+    let postPin: ScrollTrigger | null = null;
+    if (onPostPinRef?.current) {
+      postPin = ScrollTrigger.create({
+        trigger: onPostPinRef.current,
+        start: "top top",
+        onEnter: () => markSection(3),
+        onLeaveBack: () => markSection(totalSections - 1),
+      });
+    }
+
+    return () => {
+      st?.kill();
+      tween.kill();
+      postPin?.kill();
+    };
+  }, [totalSections, onPostPinRef]);
 
   const scrollToSection = (idx: number) => {
     const clamped = Math.min(Math.max(idx, 0), totalSections - 1);
-    // Scroll window: section idx berada di posisi idx/total pada tunnel.
-    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    window.scrollTo({ top: (clamped / (totalSections - 1)) * maxScroll, behavior: "smooth" });
+    // Section idx = posisi idx*100vh dalam wrapper (start wrapper top = 0).
+    smoothScrollTo(clamped * window.innerWidth);
   };
 
-  return { tunnelRef, trackX, smoothProgress, activeSection, scrollToSection };
+  return { wrapRef, trackRef, activeSection, scrollToSection };
 }
