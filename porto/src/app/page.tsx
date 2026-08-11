@@ -17,10 +17,34 @@ import { useHorizontalScroll } from "@/hooks/useHorizontalScroll";
 
 const TOTAL_SECTIONS = 4;
 
+const INTRO_FLAG = "arsydev.intro.played";
+
+/** Sudah pernah mainkan intro sesi ini? (sessionStorage — bertahan dari refresh, bukan dari buka tab baru). */
+const hasPlayedIntro = () => {
+  try {
+    return sessionStorage.getItem(INTRO_FLAG) === "1";
+  } catch {
+    return false;
+  }
+};
+
 type IntroPhase = "loading" | "expand" | "landing";
 
 export default function Home() {
-  const [phase, setPhase] = useState<IntroPhase>("loading");
+  // Baca flag sesi awal render (lazy) agar refresh langsung ke landing tanpa kedip layar.
+  // Tidak ada cara client penanda "hard refresh": reload mempertahankan sessionStorage,
+  // jadi refresh apa pun melewatkan intro — persis yang diminta.
+  const [playedOnce] = useState(hasPlayedIntro);
+  const [phase, setPhase] = useState<IntroPhase>(playedOnce ? "landing" : "loading");
+
+  // Tandai sesi sesegera mungkin: intro hanya main sekali per sesi browser.
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(INTRO_FLAG, "1");
+    } catch {
+      // storage tidak tersedia → intro main tiap muat, degradasi aman
+    }
+  }, []);
 
   // Scroll terkunci selama loading & scroll-expand intro berlangsung.
   useEffect(() => {
@@ -39,12 +63,14 @@ export default function Home() {
 
   return (
     <>
-      {phase === "loading" ? (
-        <LoadingScreen onDone={() => setPhase("expand")} />
-      ) : null}
-
-      {phase === "expand" ? (
-        <ScrollExpandIntro onDone={() => setPhase("landing")} />
+      {!playedOnce && phase !== "landing" ? (
+        <>
+          <LoadingScreen onDone={() => setPhase("expand")} />
+          {/* Intro di-mount SEJAK loading & di baliknya (z-9000 < z-9999).
+              Fade-in-nya rampung di balik layar loading, jadi saat loading fade-out,
+              intro sudah opak penuh — tidak ada kelebat landing page. */}
+          <ScrollExpandIntro onDone={() => setPhase("landing")} />
+        </>
       ) : null}
 
       {phase !== "loading" ? (
