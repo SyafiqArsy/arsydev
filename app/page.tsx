@@ -6,9 +6,7 @@ import Preloader from "@/components/Preloader";
 import Navbar from "@/components/Navbar";
 import SequenceScroll from "@/components/SequenceScroll";
 import AboutSection from "@/components/AboutSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import BentoSection from "@/components/BentoSection";
-import CTASection from "@/components/CTASection";
+import HorizontalScroll from "@/components/HorizontalScroll";
 import Footer from "@/components/Footer";
 import { useImageSequence } from "@/hooks/useImageSequence";
 import { useLenis } from "@/components/SmoothScroll";
@@ -45,10 +43,7 @@ export default function Home() {
       >
         <SequenceScroll imagesRef={imagesRef} isLoaded={isLoaded} />
         <AboutSection />
-        <ProjectsSection />
-        <BentoSection />
-        <CTASection />
-        <Footer />
+        <HorizontalScroll />
       </motion.main>
     </>
   );

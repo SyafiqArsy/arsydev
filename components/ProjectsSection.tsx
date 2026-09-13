@@ -47,7 +47,7 @@ const galleryItems: AccordionGalleryItem[] = [
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="relative z-10 bg-navy-light py-28">
+    <section id="projects" className="relative z-10 flex h-full flex-col items-center justify-center bg-navy-light py-12">
       <div className="mx-auto max-w-6xl px-6 sm:px-10 md:px-16">
         <motion.div
           initial={{ opacity: 0, x: 40 }}
@@ -67,7 +67,7 @@ export default function ProjectsSection() {
       </div>
 
       <motion.div
-        className="mt-12 px-6 sm:px-10 md:px-16"
+        className="mt-8 w-full px-6 sm:px-10 md:px-16"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
@@ -76,7 +76,7 @@ export default function ProjectsSection() {
         <AccordionGallery
           items={galleryItems}
           defaultIndex={2}
-          height={460}
+          height={400}
           gap={10}
           radius={14}
           expandRatio={0.52}

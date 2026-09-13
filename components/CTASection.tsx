@@ -4,7 +4,7 @@ import MagneticButton from "./MagneticButton";
 
 export default function CTASection() {
   return (
-    <section id="contact" className="grain relative z-10 overflow-hidden bg-abyss py-32 text-accent-light">
+    <section id="contact" className="grain relative z-10 flex h-full flex-col items-center justify-center overflow-hidden bg-abyss px-6 text-accent-light">
       <div
         className="animate-drift pointer-events-none absolute -left-1/4 top-0 h-[36rem] w-[36rem] rounded-full opacity-40 blur-3xl"
         style={{ background: "radial-gradient(circle, #6d9dff 0%, transparent 70%)" }}

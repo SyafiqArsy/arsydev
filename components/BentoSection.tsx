@@ -45,8 +45,8 @@ const SKILLS: BentoCardData[] = [
 
 export default function BentoSection() {
   return (
-    <section id="skills" className="relative z-10 bg-navy px-6 py-28 sm:px-10 md:px-16">
-      <div className="mx-auto max-w-6xl">
+    <section id="skills" className="relative z-10 flex h-full flex-col items-center justify-center bg-navy px-6 py-10 sm:px-10 md:px-16">
+      <div className="mx-auto w-full max-w-6xl">
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -59,13 +59,13 @@ export default function BentoSection() {
           <TextReveal
             as="h2"
             text="Skills & Tools."
-            className="mt-4 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl"
+            className="mt-3 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl"
           />
         </motion.div>
       </div>
 
       <motion.div
-        className="mt-16 flex justify-center"
+        className="mt-8 flex justify-center"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
