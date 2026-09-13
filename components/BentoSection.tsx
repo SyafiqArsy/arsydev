@@ -6,40 +6,40 @@ import MagicBento, { type BentoCardData } from "./animations/MagicBento";
 
 const SKILLS: BentoCardData[] = [
   {
-    color: "#111a2e",
-    title: "Frontend Development",
-    description: "React, Next.js, TypeScript, Tailwind CSS — building performant, accessible UIs.",
-    label: "💻",
+    color: "#0a0f1c",
+    title: "Backend Development",
+    description: "FastAPI, Node.js, REST & GraphQL APIs — building robust, scalable services.",
+    label: "🖥️",
   },
   {
-    color: "#111a2e",
-    title: "UI/UX Design",
-    description: "Figma, design systems, user research — crafting intuitive interfaces.",
-    label: "🎨",
+    color: "#0a0f1c",
+    title: "Database Management",
+    description: "PostgreSQL, MySQL, Redis — schema design, indexing, and query optimization.",
+    label: "🗄️",
   },
   {
-    color: "#111a2e",
-    title: "Motion Design",
-    description: "GSAP, Framer Motion, scroll-driven animations — bringing interfaces to life.",
-    label: "✨",
+    color: "#0a0f1c",
+    title: "System Architecture",
+    description: "Microservices, caching, and API design — clean, maintainable system boundaries.",
+    label: "🏗️",
   },
   {
-    color: "#111a2e",
-    title: "Creative Coding",
-    description: "Three.js, Canvas API, WebGL — generative art and interactive experiences.",
-    label: "🧪",
+    color: "#0a0f1c",
+    title: "API Development",
+    description: "Auth, validation, documentation — production-grade, well-tested endpoints.",
+    label: "🔌",
   },
   {
-    color: "#111a2e",
+    color: "#0a0f1c",
     title: "Tools & Workflow",
-    description: "Git, CI/CD, VS Code — streamlined development pipelines.",
+    description: "Git, Docker, CI/CD, Linux — streamlined development and deployment pipelines.",
     label: "⚙️",
   },
   {
-    color: "#111a2e",
-    title: "Backend Basics",
-    description: "Node.js, REST APIs, PostgreSQL — full-stack awareness.",
-    label: "🔧",
+    color: "#0a0f1c",
+    title: "Frontend Fundamentals",
+    description: "React, Next.js, TypeScript — building clean, performant interfaces.",
+    label: "💻",
   },
 ];
 
@@ -58,8 +58,8 @@ export default function BentoSection() {
           </p>
           <TextReveal
             as="h2"
-            text="What I Work With."
-            className="mt-6 max-w-2xl text-4xl font-semibold leading-[1.05] tracking-tight text-accent-light sm:text-5xl md:text-6xl"
+            text="Skills & Tools."
+            className="mt-4 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl"
           />
         </motion.div>
       </div>

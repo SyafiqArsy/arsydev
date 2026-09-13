@@ -52,7 +52,7 @@ export default function Preloader({ progress, isLoaded, onExitComplete }: Preloa
                     delay: 0.15 + i * 0.045,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="inline-block text-4xl sm:text-6xl font-semibold tracking-tight text-accent-light"
+                  className="inline-block text-2xl sm:text-4xl font-semibold tracking-tight text-accent-light"
                 >
                   {letter}
                 </motion.span>

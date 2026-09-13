@@ -12,13 +12,13 @@ export default function AboutSection() {
           <TextReveal
             as="h2"
             text="About Me"
-            className="text-4xl font-semibold leading-[1.05] tracking-tight text-accent-light sm:text-6xl md:text-7xl"
+            className="text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl md:text-4xl"
           />
 
           <TextReveal
             as="p"
             text="I'm Syafiq Muhammad Musyafa Arsy At-Taufiq, an Informatics engineering student specializing in backend development with a strong interest in building efficient, scalable, and maintainable systems. Experienced in API development, database management, and server-side programming."
-            className="mt-8 max-w-2xl text-lg leading-relaxed text-slate sm:text-xl md:text-2xl"
+            className="mt-6 max-w-2xl text-base leading-relaxed text-slate sm:text-lg"
           />
         </div>
 

@@ -61,13 +61,13 @@ export default function ProjectsSection() {
           <TextReveal
             as="h2"
             text="Projects I've Built."
-            className="mt-6 max-w-2xl text-4xl font-semibold leading-[1.05] tracking-tight text-accent-light sm:text-5xl md:text-6xl"
+            className="mt-4 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl"
           />
         </motion.div>
       </div>
 
       <motion.div
-        className="mt-16 px-6 sm:px-10 md:px-16"
+        className="mt-12 px-6 sm:px-10 md:px-16"
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}

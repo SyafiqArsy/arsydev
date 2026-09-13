@@ -84,7 +84,7 @@ export default function Navbar() {
                   <span className="font-mono text-xs text-slate">
                     0{i + 1}
                   </span>
-                  <span className="text-4xl font-semibold tracking-tight transition-transform duration-500 group-hover:translate-x-3 group-hover:text-accent sm:text-6xl md:text-7xl">
+                  <span className="text-3xl font-semibold tracking-tight transition-transform duration-500 group-hover:translate-x-3 group-hover:text-accent sm:text-4xl md:text-5xl">
                     {link.label}
                   </span>
                 </motion.a>

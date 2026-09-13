@@ -21,7 +21,7 @@ export default function Footer() {
               <p className="text-xs uppercase tracking-[0.25em] text-accent-light/40">
                 Navigation
               </p>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-3 space-y-2">
                 {NAV_LINKS.map((link) => (
                   <li key={link.href}>
                     <a
@@ -39,7 +39,7 @@ export default function Footer() {
               <p className="text-xs uppercase tracking-[0.25em] text-accent-light/40">
                 Connect
               </p>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-3 space-y-2">
                 {SOCIAL_LINKS.map((social) => (
                   <li key={social.label}>
                     <a

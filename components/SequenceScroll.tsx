@@ -79,7 +79,7 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
     }
 
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#0b1120";
+    ctx.fillStyle = "#05070d";
     ctx.fillRect(0, 0, width, height);
     ctx.drawImage(img, 0, 0, sw, sh, dx, dy, dw, dh);
   }, [imagesRef]);
@@ -145,7 +145,7 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
           style={{ opacity: stage1Opacity, y: stage1Y }}
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
-          <h1 className="hero-text max-w-3xl text-[2.5rem] font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
+          <h1 className="hero-text max-w-3xl text-3xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">
             Syafiq Arsy<span className="text-accent">.</span>
           </h1>
           <p className="hero-text mt-5 max-w-md text-sm tracking-wide sm:text-base">
@@ -159,7 +159,7 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-left sm:items-start sm:justify-center sm:px-12 md:px-20"
         >
           <div className="max-w-xl">
-            <h2 className="hero-text text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-8xl">
+            <h2 className="hero-text text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-6xl">
               Building for<br />the Web<span className="text-accent">.</span>
             </h2>
             <p className="hero-text mt-3 max-w-xs text-sm sm:text-base">
@@ -174,7 +174,7 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-right sm:items-end sm:justify-center sm:px-12 md:px-20"
         >
           <div className="max-w-2xl">
-            <h2 className="hero-text text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-8xl">
+            <h2 className="hero-text text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-6xl">
               Design Meets<br />Code<span className="text-accent">.</span>
             </h2>
             <p className="hero-text mt-3 ml-auto max-w-xs text-sm sm:text-base">
@@ -188,7 +188,7 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
           style={{ opacity: stage4Opacity, y: stage4Y, pointerEvents: stage4Pointer }}
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
-          <h2 className="hero-text text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+          <h2 className="hero-text text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
             Let&apos;s Create<span className="text-accent">.</span>
           </h2>
           <p className="hero-text mt-5 max-w-md text-sm sm:text-base">

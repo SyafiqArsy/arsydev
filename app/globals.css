@@ -3,13 +3,13 @@
 @theme {
   --font-display: var(--font-outfit), "Outfit", ui-sans-serif, system-ui, sans-serif;
 
-  --color-navy: #0b1120;
-  --color-navy-light: #111a2e;
-  --color-abyss: #060911;
-  --color-steel: #2a3a5c;
-  --color-slate: #8899bb;
-  --color-accent: #5b8def;
-  --color-accent-light: #bdd0ff;
+  --color-navy: #05070d;
+  --color-navy-light: #0a0f1c;
+  --color-abyss: #03040a;
+  --color-steel: #1c2742;
+  --color-slate: #8fa3c8;
+  --color-accent: #6d9dff;
+  --color-accent-light: #cdd9f5;
 
   --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -64,7 +64,7 @@ html.lenis body {
 /* Green-tinted text that stays legible over any hero frame */
 .hero-text {
   color: var(--color-accent-light);
-  text-shadow: 0 4px 28px rgba(6, 9, 17, 0.7), 0 1px 3px rgba(6, 9, 17, 0.6);
+  text-shadow: 0 4px 28px rgba(3, 4, 10, 0.85), 0 1px 3px rgba(3, 4, 10, 0.7);
 }
 
 .hide-scrollbar {

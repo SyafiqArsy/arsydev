@@ -6,13 +6,13 @@ export function framePath(index: number): string {
 }
 
 export const COLORS = {
-  navy: "#0b1120",
-  navyLight: "#111a2e",
-  abyss: "#060911",
-  steel: "#2a3a5c",
-  slate: "#8899bb",
-  accent: "#5b8def",
-  accentLight: "#bdd0ff",
+  navy: "#05070d",
+  navyLight: "#0a0f1c",
+  abyss: "#03040a",
+  steel: "#16203a",
+  slate: "#8fa3c8",
+  accent: "#6d9dff",
+  accentLight: "#cdd9f5",
 } as const;
 
 export const NAV_LINKS = [
