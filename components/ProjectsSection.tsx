@@ -47,28 +47,28 @@ const galleryItems: AccordionGalleryItem[] = [
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="relative z-10 flex h-full flex-col items-center justify-center bg-navy-light py-12">
-      <div className="mx-auto max-w-6xl px-6 sm:px-10 md:px-16">
+    <section id="projects" className="relative z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy-light px-8 py-10 sm:px-14 md:px-20">
+      <div className="mx-auto w-full max-w-6xl px-4">
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xs uppercase tracking-[0.35em] text-slate">
+          <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent">
             Selected Work
           </p>
           <TextReveal
             as="h2"
-            text="Projects I've Built."
-            className="mt-4 max-w-2xl text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl"
+            text="Featured Projects."
+            className="mt-2 max-w-2xl text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
           />
         </motion.div>
       </div>
 
       <motion.div
-        className="mt-8 w-full px-6 sm:px-10 md:px-16"
-        initial={{ opacity: 0, y: 24 }}
+        className="mx-auto mt-6 w-full max-w-6xl px-2"
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7 }}
@@ -76,17 +76,17 @@ export default function ProjectsSection() {
         <AccordionGallery
           items={galleryItems}
           defaultIndex={2}
-          height={400}
-          gap={10}
-          radius={14}
-          expandRatio={0.52}
+          height={320}
+          gap={12}
+          radius={16}
+          expandRatio={0.48}
           ease="power3.out"
-          parallax={0.5}
-          tilt={8}
+          parallax={0.4}
+          tilt={3}
           stagger={0.06}
           trigger="hover"
-          accentColor="#5b8def"
-          overlayColor="#060911"
+          accentColor="#38bdf8"
+          overlayColor="#020617"
           textColor="#ffffff"
           grayscale={true}
           showLabels={true}

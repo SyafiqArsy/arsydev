@@ -5,24 +5,27 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative z-10 -mt-[100vh] rounded-t-[2.5rem] bg-navy px-6 pb-32 pt-28 sm:px-10 sm:pt-36 md:rounded-t-[4rem] md:px-16"
+      className="relative z-10 -mt-[100vh] rounded-t-[2.5rem] bg-navy px-8 pb-28 pt-28 sm:px-12 sm:pt-32 md:rounded-t-[4rem] md:px-20"
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div>
+          <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent">
+            Biography
+          </p>
           <TextReveal
             as="h2"
-            text="About Me"
-            className="text-3xl font-semibold leading-tight tracking-tight text-accent-light sm:text-4xl md:text-4xl"
+            text="About Me."
+            className="mt-2 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl"
           />
 
           <TextReveal
             as="p"
-            text="I'm Syafiq Muhammad Musyafa Arsy At-Taufiq, an Informatics engineering student specializing in backend development with a strong interest in building efficient, scalable, and maintainable systems. Experienced in API development, database management, and server-side programming."
-            className="mt-6 max-w-2xl text-base leading-relaxed text-slate sm:text-lg"
+            text="I'm Syafiq Muhammad Musyafa Arsy At-Taufiq, an Informatics Engineering student specializing in backend development. I build high-performance APIs, scalable databases, and maintainable system architectures."
+            className="mt-6 max-w-xl text-base leading-relaxed text-slate sm:text-lg"
           />
         </div>
 
-        <div className="relative h-[60vh] min-h-[420px] overflow-hidden rounded-3xl border border-accent/50 bg-navy-light/30 shadow-[0_0_60px_-12px_rgba(91,141,239,0.55),inset_0_0_50px_rgba(91,141,239,0.12)]">
+        <div className="relative h-[55vh] min-h-[400px] overflow-hidden rounded-3xl border border-accent/30 bg-navy-light/50 shadow-[0_0_50px_-10px_rgba(56,189,248,0.25),inset_0_0_40px_rgba(56,189,248,0.08)]">
           <Lanyard position={[0, 0, 18]} fov={18} gravity={[0, -40, 0]} />
         </div>
       </div>

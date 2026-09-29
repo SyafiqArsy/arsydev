@@ -23,11 +23,11 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-6 sm:px-10">
+      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-8 py-6 sm:px-12">
         <a
           href="#home"
-          className={`text-lg font-semibold tracking-tight transition-colors duration-500 ${
-            lightNav ? "hero-text" : "text-accent-light"
+          className={`font-mono text-lg font-bold tracking-wider transition-colors duration-500 ${
+            lightNav ? "hero-text" : "text-white"
           }`}
         >
           SYAFIQ<span className="text-accent">.</span>
@@ -35,8 +35,8 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className={`group flex items-center gap-3 text-xs font-medium uppercase tracking-[0.3em] transition-colors duration-500 ${
-            lightNav ? "hero-text" : "text-accent-light"
+          className={`group flex items-center gap-3 font-mono text-xs font-medium uppercase tracking-[0.3em] transition-colors duration-500 ${
+            lightNav ? "hero-text" : "text-white"
           }`}
           aria-expanded={open}
           aria-label="Toggle menu"
@@ -44,12 +44,12 @@ export default function Navbar() {
           <span>{open ? "Close" : "Menu"}</span>
           <span className="relative flex h-3 w-6 flex-col justify-between">
             <span
-              className={`block h-px w-full bg-current transition-transform duration-300 ${
+              className={`block h-0.5 w-full bg-current transition-transform duration-300 ${
                 open ? "translate-y-[5px] rotate-45" : ""
               }`}
             />
             <span
-              className={`block h-px w-full bg-current transition-transform duration-300 ${
+              className={`block h-0.5 w-full bg-current transition-transform duration-300 ${
                 open ? "-translate-y-[5px] -rotate-45" : ""
               }`}
             />
@@ -64,9 +64,9 @@ export default function Navbar() {
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-abyss px-6 pb-10 pt-28 text-accent-light sm:px-10 sm:pt-32"
+            className="fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-abyss px-8 pb-10 pt-28 text-white sm:px-14 sm:pt-32"
           >
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-2">
               {NAV_LINKS.map((link, i) => (
                 <motion.a
                   key={link.href}
@@ -79,12 +79,12 @@ export default function Navbar() {
                     duration: 0.7,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="group flex items-baseline gap-4 overflow-hidden border-b border-accent-light/10 py-3 sm:py-4"
+                  className="group flex items-baseline gap-4 overflow-hidden border-b border-accent/20 py-4"
                 >
-                  <span className="font-mono text-xs text-slate">
+                  <span className="font-mono text-xs text-accent">
                     0{i + 1}
                   </span>
-                  <span className="text-3xl font-semibold tracking-tight transition-transform duration-500 group-hover:translate-x-3 group-hover:text-accent sm:text-4xl md:text-5xl">
+                  <span className="text-3xl font-bold tracking-tight transition-transform duration-500 group-hover:translate-x-3 group-hover:text-accent sm:text-4xl md:text-5xl">
                     {link.label}
                   </span>
                 </motion.a>
@@ -104,7 +104,7 @@ export default function Navbar() {
                     href={social.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs uppercase tracking-[0.25em] text-accent-light/70 transition-colors hover:text-accent"
+                    className="font-mono text-xs uppercase tracking-[0.25em] text-slate transition-colors hover:text-accent"
                   >
                     {social.label}
                   </a>
