@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { motion, useMotionValue, useMotionValueEvent, useTransform } from "motion/react";
 import { TOTAL_FRAMES } from "@/lib/constants";
-import MagneticButton from "./MagneticButton";
+import MagneticButton from "@/components/ui/MagneticButton";
 import HeroIntroVideo from "./HeroIntroVideo";
 
 interface SequenceScrollProps {

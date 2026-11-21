@@ -103,16 +103,16 @@ function OrbitNode({ item, activeId, setActiveId, isPaused }: OrbitNodeProps) {
 }
 
 function VisualRings() {
-  const ringMeshes = useMemo(() => {
+  const ringLines = useMemo(() => {
     return Object.entries(RING_RADII).map(([key, config]) => {
       const points: THREE.Vector3[] = [];
       const segments = 64;
 
       for (let i = 0; i <= segments; i++) {
         const angle = (i / segments) * Math.PI * 2;
-        let x = Math.cos(angle) * config.rx;
-        let z = Math.sin(angle) * config.rz;
-        let y = 0;
+        const x = Math.cos(angle) * config.rx;
+        const z = Math.sin(angle) * config.rz;
+        const y = 0;
 
         const cosX = Math.cos(config.tiltX);
         const sinX = Math.sin(config.tiltX);
@@ -129,16 +129,22 @@ function VisualRings() {
       }
 
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
-      return { key, geometry };
+      const material = new THREE.LineBasicMaterial({
+        color: "#5b8def",
+        transparent: true,
+        opacity: 0.1,
+      });
+
+      const line = new THREE.Line(geometry, material);
+
+      return { key, line };
     });
   }, []);
 
   return (
     <group>
-      {ringMeshes.map(({ key, geometry }) => (
-        <line key={key} geometry={geometry}>
-          <lineBasicMaterial color="#5b8def" transparent opacity={0.1} />
-        </line>
+      {ringLines.map(({ key, line }) => (
+        <primitive key={key} object={line} />
       ))}
     </group>
   );

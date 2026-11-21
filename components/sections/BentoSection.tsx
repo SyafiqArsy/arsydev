@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import TextReveal from "./TextReveal";
-import MagicBento, { type BentoCardData } from "./animations/MagicBento";
-import Skills3DWrapper from "./Skills3DWrapper";
+import TextReveal from "@/components/animations/TextReveal";
+import MagicBento, { type BentoCardData } from "@/components/animations/MagicBento";
+import Skills3DWrapper from "@/components/3d/Skills3DWrapper";
 
 const SKILLS: BentoCardData[] = [
   {

@@ -1,5 +1,5 @@
-import TextReveal from "./TextReveal";
-import Lanyard from "@/Lanyard";
+import TextReveal from "@/components/animations/TextReveal";
+import Lanyard from "@/components/3d/Lanyard";
 
 export default function AboutSection() {
   return (

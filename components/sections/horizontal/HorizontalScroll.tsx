@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import ProjectsSection from "./ProjectsSection";
-import BentoSection from "./BentoSection";
-import CTASection from "./CTASection";
+import ProjectsSection from "@/components/sections/ProjectsSection";
+import BentoSection from "@/components/sections/BentoSection";
+import CTASection from "@/components/sections/CTASection";
 
 export default function HorizontalScroll() {
   const targetRef = useRef<HTMLDivElement>(null);

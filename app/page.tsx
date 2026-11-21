@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import Preloader from "@/components/Preloader";
-import Navbar from "@/components/Navbar";
-import SequenceScroll from "@/components/SequenceScroll";
-import AboutSection from "@/components/AboutSection";
-import HorizontalScroll from "@/components/HorizontalScroll";
-import Footer from "@/components/Footer";
+import Preloader from "@/components/layout/Preloader";
+import Navbar from "@/components/layout/Navbar";
+import SequenceScroll from "@/components/sections/hero/SequenceScroll";
+import AboutSection from "@/components/sections/AboutSection";
+import HorizontalScroll from "@/components/sections/horizontal/HorizontalScroll";
+import Footer from "@/components/layout/Footer";
 import { useImageSequence } from "@/hooks/useImageSequence";
-import { useLenis } from "@/components/SmoothScroll";
+import { useLenis } from "@/components/providers/SmoothScroll";
 
 export default function Home() {
   const { imagesRef, progress, isLoaded } = useImageSequence();

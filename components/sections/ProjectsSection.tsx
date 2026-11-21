@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import TextReveal from "./TextReveal";
+import TextReveal from "@/components/animations/TextReveal";
 import AccordionGallery, {
   type AccordionGalleryItem,
-} from "./animations/AccordionGallery";
+} from "@/components/animations/AccordionGallery";
 
 const galleryItems: AccordionGalleryItem[] = [
   {

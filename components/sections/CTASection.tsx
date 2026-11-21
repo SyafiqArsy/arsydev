@@ -1,6 +1,6 @@
 "use client";
 
-import MagneticButton from "./MagneticButton";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function CTASection() {
   return (

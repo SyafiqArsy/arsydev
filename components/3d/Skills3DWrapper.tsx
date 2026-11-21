@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const SkillsOrbitScene = dynamic(() => import("./3d/SkillsOrbitScene"), {
+const SkillsOrbitScene = dynamic(() => import("./SkillsOrbitScene"), {
   ssr: false,
   loading: () => (
     <div className="mx-auto my-4 flex h-[380px] w-full max-w-5xl items-center justify-center sm:h-[420px] md:h-[460px]">
