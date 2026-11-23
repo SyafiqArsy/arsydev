@@ -4,14 +4,13 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import BentoSection from "@/components/sections/BentoSection";
-import CTASection from "@/components/sections/CTASection";
+import ExperienceSection from "@/components/sections/ExperienceSection";
 
 export default function HorizontalScroll() {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
 
-  // 3 full-viewport panels side by side → translate track so the last panel
-  // lands flush left at progress 1 (200vw of travel over a 300vw track).
+  // 3 full-viewport panels side by side.
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.67%"]);
 
   return (
@@ -21,11 +20,13 @@ export default function HorizontalScroll() {
           <Panel>
             <ProjectsSection />
           </Panel>
+
           <Panel>
             <BentoSection />
           </Panel>
+
           <Panel>
-            <CTASection />
+            <ExperienceSection />
           </Panel>
         </motion.div>
       </div>
@@ -34,5 +35,9 @@ export default function HorizontalScroll() {
 }
 
 function Panel({ children }: { children: React.ReactNode }) {
-  return <div className="relative h-screen w-screen flex-shrink-0 overflow-hidden">{children}</div>;
+  return (
+    <div className="relative h-screen w-screen flex-shrink-0 overflow-hidden">
+      {children}
+    </div>
+  );
 }

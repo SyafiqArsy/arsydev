@@ -1,4 +1,4 @@
-export const TOTAL_FRAMES = 121;
+export const TOTAL_FRAMES = 151;
 
 export function framePath(index: number): string {
   const clamped = Math.min(TOTAL_FRAMES, Math.max(1, index));

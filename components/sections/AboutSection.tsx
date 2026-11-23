@@ -1,22 +1,33 @@
 import TextReveal from "@/components/animations/TextReveal";
+import StrokeText from "@/components/animations/StrokeText";
 import Lanyard from "@/components/3d/Lanyard";
 
 export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative z-10 -mt-[100vh] rounded-t-[2.5rem] bg-navy px-8 pb-28 pt-28 sm:px-12 sm:pt-32 md:rounded-t-[4rem] md:px-20"
+      className="relative z-10 -mt-[100vh] flex min-h-screen flex-col justify-center rounded-t-[2.5rem] bg-navy px-8 py-20 sm:px-12 md:rounded-t-[4rem] md:px-20"
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent">
-            Biography
-          </p>
-          <TextReveal
-            as="h2"
-            text="About Me."
-            className="mt-2 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl"
-          />
+          <h2 className="mt-2 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
+            <StrokeText
+              text="About Me."
+              responsive
+              fontSize={48}
+              fontWeight="inherit"
+              letterSpacing="inherit"
+              strokeColor="#38bdf8"
+              fillColor="currentColor"
+              strokeWidth={1.2}
+              drawDuration={1.4}
+              fillDelay={0.15}
+              stagger={0.035}
+              trigger="scroll"
+              fillMode="wipe"
+              wipeFrom="left"
+            />
+          </h2>
 
           <TextReveal
             as="p"

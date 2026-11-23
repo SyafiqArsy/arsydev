@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import TextReveal from "@/components/animations/TextReveal";
+import StrokeText from "@/components/animations/StrokeText";
 import MagicBento, { type BentoCardData } from "@/components/animations/MagicBento";
 import Skills3DWrapper from "@/components/3d/Skills3DWrapper";
 
@@ -59,14 +59,24 @@ export default function BentoSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent">
-              Skills & Tools
-            </p>
-            <TextReveal
-              as="h2"
-              text="Tech Ecosystem."
-              className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
-            />
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
+              <StrokeText
+                text="Tech Ecosystem."
+                responsive
+                fontSize={36}
+                fontWeight="inherit"
+                letterSpacing="inherit"
+                strokeColor="#38bdf8"
+                fillColor="currentColor"
+                strokeWidth={1.2}
+                drawDuration={1.4}
+                fillDelay={0.15}
+                stagger={0.035}
+                trigger="scroll"
+                fillMode="wipe"
+                wipeFrom="left"
+              />
+            </h2>
           </motion.div>
 
           {/* Mode Switcher Buttons */}

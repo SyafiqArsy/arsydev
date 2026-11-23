@@ -18,7 +18,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const [lenis, setLenis] = useState<Lenis | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
     // Browsers restore the previous scroll position on a hard refresh by
     // default — force every load to start at the top (the preloader stays
     // up long enough to mask this, so there's no visible jump).
@@ -28,9 +28,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     window.scrollTo(0, 0);
 
     const instance = new Lenis({
-      duration: 1.15,
-      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      duration: 1,
+      easing: (t: number) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
+
+      // Mouse wheel: reduce scroll distance and increase resistance.
+      wheelMultiplier: 0.65,
+
+      // Touchscreen: retain comfortable scrolling.
       touchMultiplier: 1.2,
     });
 

@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "motion/react";
-import TextReveal from "@/components/animations/TextReveal";
+import StrokeText from "@/components/animations/StrokeText";
 import AccordionGallery, {
   type AccordionGalleryItem,
 } from "@/components/animations/AccordionGallery";
+import { useRouter } from "next/navigation";
+import { LiquidButton } from "@/components/ui/liquid-button";
 
 const galleryItems: AccordionGalleryItem[] = [
   {
@@ -46,8 +48,10 @@ const galleryItems: AccordionGalleryItem[] = [
 ];
 
 export default function ProjectsSection() {
+  const router = useRouter();
+
   return (
-    <section id="projects" className="relative z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy-light px-8 py-10 sm:px-14 md:px-20">
+    <section id="projects" className="relative z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 md:px-20">
       <div className="mx-auto w-full max-w-6xl px-4">
         <motion.div
           initial={{ opacity: 0, x: 30 }}
@@ -55,14 +59,24 @@ export default function ProjectsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent">
-            Selected Work
-          </p>
-          <TextReveal
-            as="h2"
-            text="Featured Projects."
-            className="mt-2 max-w-2xl text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
-          />
+          <h2 className="mt-2 max-w-2xl text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
+            <StrokeText
+              text="Featured Projects."
+              responsive
+              fontSize={36}
+              fontWeight="inherit"
+              letterSpacing="inherit"
+              strokeColor="#38bdf8"
+              fillColor="currentColor"
+              strokeWidth={1.2}
+              drawDuration={1.4}
+              fillDelay={0.15}
+              stagger={0.035}
+              trigger="scroll"
+              fillMode="wipe"
+              wipeFrom="left"
+            />
+          </h2>
         </motion.div>
       </div>
 
@@ -91,6 +105,23 @@ export default function ProjectsSection() {
           grayscale={true}
           showLabels={true}
         />
+      </motion.div>
+
+      {/* See More Projects Button */}
+      <motion.div
+        className="mt-10 flex w-full justify-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+      >
+        <LiquidButton
+          variant="dark"
+          size="default"
+          onClick={() => router.push("/projects")}
+        >
+          See More Project <span aria-hidden="true">↗</span>
+        </LiquidButton>
       </motion.div>
     </section>
   );

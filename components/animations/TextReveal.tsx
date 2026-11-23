@@ -13,7 +13,7 @@ export default function TextReveal({ text, className = "", as = "p" }: TextRevea
   const ref = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.9", "start 0.3"],
+    offset: ["start 0.95", "start 0.5"],
   });
 
   const words = text.split(" ");

@@ -1,15 +1,18 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import { TOTAL_FRAMES, framePath } from "@/lib/constants";
 
 interface UseImageSequenceResult {
-  /** Mutable ref — always holds the freshest loaded <img> elements, indexed 0..TOTAL_FRAMES-1. */
+  /** Mutable ref containing loaded image elements, indexed 0..TOTAL_FRAMES-1. */
   imagesRef: React.RefObject<HTMLImageElement[]>;
   /** 0-100 loading progress. */
   progress: number;
   isLoaded: boolean;
 }
+
+const MAX_CONCURRENT_LOADS = 6;
 
 export function useImageSequence(): UseImageSequenceResult {
   const imagesRef = useRef<HTMLImageElement[]>([]);
@@ -19,25 +22,76 @@ export function useImageSequence(): UseImageSequenceResult {
   useEffect(() => {
     let cancelled = false;
     let loadedCount = 0;
+    let nextIndex = 0;
+
     const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
 
-    const handleSettled = () => {
-      if (cancelled) return;
-      loadedCount += 1;
-      setProgress(Math.round((loadedCount / TOTAL_FRAMES) * 100));
-      if (loadedCount === TOTAL_FRAMES) setIsLoaded(true);
+    imagesRef.current = images;
+
+    const loadImage = (index: number): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+
+        img.decoding = "async";
+        img.fetchPriority = "low";
+
+        img.onload = () => {
+          if (!cancelled) {
+            loadedCount += 1;
+            setProgress(
+              Math.round((loadedCount / TOTAL_FRAMES) * 100)
+            );
+          }
+
+          resolve();
+        };
+
+        img.onerror = () => {
+          if (!cancelled) {
+            loadedCount += 1;
+            setProgress(
+              Math.round((loadedCount / TOTAL_FRAMES) * 100)
+            );
+
+            console.error(
+              `Failed to load image sequence frame: ${index + 1}`
+            );
+          }
+
+          resolve();
+        };
+
+        images[index] = img;
+        img.src = framePath(index + 1);
+      });
     };
 
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      img.decoding = "async";
-      img.onload = handleSettled;
-      img.onerror = handleSettled;
-      img.src = framePath(i + 1);
-      images[i] = img;
-    }
+    const worker = async () => {
+      while (!cancelled) {
+        const index = nextIndex++;
 
-    imagesRef.current = images;
+        if (index >= TOTAL_FRAMES) return;
+
+        await loadImage(index);
+      }
+    };
+
+    const startLoading = async () => {
+      const workerCount = Math.min(
+        MAX_CONCURRENT_LOADS,
+        TOTAL_FRAMES
+      );
+
+      await Promise.all(
+        Array.from({ length: workerCount }, () => worker())
+      );
+
+      if (!cancelled) {
+        setIsLoaded(true);
+      }
+    };
+
+    void startLoading();
 
     return () => {
       cancelled = true;

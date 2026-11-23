@@ -5,6 +5,7 @@ import { motion, useMotionValue, useMotionValueEvent, useTransform } from "motio
 import { TOTAL_FRAMES } from "@/lib/constants";
 import MagneticButton from "@/components/ui/MagneticButton";
 import HeroIntroVideo from "./HeroIntroVideo";
+import TechText from "@/components/animations/TechText";
 
 interface SequenceScrollProps {
   imagesRef: React.RefObject<HTMLImageElement[]>;
@@ -46,7 +47,42 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
     };
   }, [scrollYProgress]);
 
-  const frameIndex = useTransform(scrollYProgress, [0, 1], [1, TOTAL_FRAMES]);
+  // Complete the video-to-sequence handoff within the first few pixels.
+  const HANDOFF_END = 0.003;
+
+  // Keep frame 1 at the exact moment the canvas takes over.
+  // Then progress through all remaining frames.
+  const frameIndex = useTransform(
+    scrollYProgress,
+    [HANDOFF_END, 1],
+    [1, TOTAL_FRAMES]
+  );
+
+  // Video and canvas crossfade over exactly the same scroll range.
+  const videoOpacity = useTransform(
+    scrollYProgress,
+    [0, HANDOFF_END],
+    [1, 0]
+  );
+
+  const canvasOpacity = useTransform(
+    scrollYProgress,
+    [0, HANDOFF_END],
+    [0, 1]
+  );
+
+  // Intro content fades out during the transition.
+  const introOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.09, 0.16],
+    [1, 1, 0]
+  );
+
+  const introY = useTransform(
+    scrollYProgress,
+    [0, 0.16],
+    [0, -32]
+  );
 
   const draw = useCallback((rawIndex: number) => {
     const canvas = canvasRef.current;
@@ -79,7 +115,7 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
     }
 
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#05070d";
+    ctx.fillStyle = "#020617";
     ctx.fillRect(0, 0, width, height);
     ctx.drawImage(img, 0, 0, sw, sh, dx, dy, dw, dh);
   }, [imagesRef]);
@@ -121,9 +157,6 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
     }
   });
 
-  const stage1Opacity = useTransform(scrollYProgress, [0, 0.09, 0.16], [1, 1, 0]);
-  const stage1Y = useTransform(scrollYProgress, [0, 0.16], [0, -32]);
-
   const stage2Opacity = useTransform(scrollYProgress, [0.2, 0.28, 0.4, 0.47], [0, 1, 1, 0]);
   const stage2X = useTransform(scrollYProgress, [0.2, 0.3], [-48, 0]);
 
@@ -135,22 +168,82 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
   const stage4Pointer = useTransform(stage4Opacity, (v) => (v > 0.6 ? "auto" : "none"));
 
   return (
-    <section ref={containerRef} className="relative h-[400vh] bg-navy">
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-navy">
-        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-        <HeroIntroVideo />
+    <section
+      ref={containerRef}
+      className="relative h-[400vh] bg-transparent"
+    >
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-transparent">
+        <motion.canvas
+          ref={canvasRef}
+          style={{ opacity: canvasOpacity }}
+          className="absolute inset-0 z-10 h-full w-full"
+        />
 
-        {/* Stage 1 — 0% — centered opening line */}
+        <HeroIntroVideo opacity={videoOpacity} />
+
+        {/* Intro content */}
         <motion.div
-          style={{ opacity: stage1Opacity, y: stage1Y }}
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+          style={{ opacity: introOpacity, y: introY }}
+          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-start justify-center px-1 text-left sm:px-2 md:px-4 lg:px-8"
         >
-          <h1 className="hero-text max-w-3xl text-3xl font-semibold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-            Syafiq Arsy<span className="text-accent">.</span>
-          </h1>
-          <p className="hero-text mt-5 max-w-md text-sm tracking-wide sm:text-base">
-            Frontend Developer & UI Designer crafting clean, performant web experiences.
-          </p>
+          <div className="w-full max-w-[560px]">
+            {/* ARSY */}
+            <div className="pointer-events-auto relative -mt-[70px] h-[180px] w-full">
+              <TechText
+                text="ARSY"
+                fontWeight={700}
+                fontSize={125}
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={15}
+                intro="none"
+                introDuration={2}
+                clickKick
+                guides={false}
+                fontFamily=""
+                letterSpacing={-0.05}
+                color="#38bdf8"
+                accentColor="#7dd3fc"
+                align="center"
+              />
+            </div>
+
+            {/* DEV */}
+            <div className="pointer-events-auto relative -mt-[70px] h-[180px] w-full">
+              <TechText
+                text="DEV"
+                fontWeight={700}
+                fontSize={125}
+                reveal="letter"
+                dashLength={4}
+                dashGap={2}
+                specks={15}
+                intro="none"
+                introDuration={2}
+                clickKick
+                guides={false}
+                fontFamily=""
+                letterSpacing={-0.05}
+                color="#38bdf8"
+                accentColor="#7dd3fc"
+                align="center"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Scroll cue */}
+        <motion.div
+          style={{ opacity: introOpacity }}
+          className="pointer-events-none absolute bottom-8 left-1/2 z-20 -translate-x-1/2"
+        >
+          <div className="hero-text flex flex-col items-center gap-2">
+            <span className="text-[10px] uppercase tracking-[0.3em]">
+              Scroll
+            </span>
+            <span className="h-8 w-px animate-pulse bg-current" />
+          </div>
         </motion.div>
 
         {/* Stage 2 — 30% — left aligned */}
@@ -200,17 +293,6 @@ export default function SequenceScroll({ imagesRef, isLoaded }: SequenceScrollPr
           >
             View My Work
           </MagneticButton>
-        </motion.div>
-
-        {/* Scroll cue */}
-        <motion.div
-          style={{ opacity: stage1Opacity }}
-          className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <div className="hero-text flex flex-col items-center gap-2">
-            <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-            <span className="h-8 w-px animate-pulse bg-current" />
-          </div>
         </motion.div>
       </div>
     </section>
