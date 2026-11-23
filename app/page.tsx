@@ -7,9 +7,8 @@ import Preloader from "@/components/layout/Preloader";
 import Navbar from "@/components/layout/Navbar";
 import SequenceScroll from "@/components/sections/hero/SequenceScroll";
 import AboutSection from "@/components/sections/AboutSection";
-import AchievementsSection from "@/components/sections/AchievementsSection";
+import AchievementsCTA from "@/components/sections/transitions/AchievementsCTA";
 import HorizontalScroll from "@/components/sections/horizontal/HorizontalScroll";
-import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/layout/Footer";
 import { useImageSequence } from "@/hooks/useImageSequence";
 import { useLenis } from "@/components/providers/SmoothScroll";
@@ -68,8 +67,7 @@ export default function Home() {
           />
         </div>
         <HorizontalScroll />
-        <AchievementsSection />
-        <CTASection />
+        <AchievementsCTA />
       </motion.main>
     </>
   );
