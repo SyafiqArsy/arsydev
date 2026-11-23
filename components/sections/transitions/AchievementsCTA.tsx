@@ -28,6 +28,7 @@ useLayoutEffect(() => {
         transformOrigin: "center center",
         transformPerspective: 1400,
         zIndex: 2,
+        pointerEvents: "auto",
     });
 
     gsap.set(cta, {
@@ -38,17 +39,30 @@ useLayoutEffect(() => {
         z: -900,
         rotateX: -8,
         opacity: 0,
+        pointerEvents: "none",
     });
 
     const timeline = gsap.timeline({
         scrollTrigger: {
-        trigger: container,
-        start: "top top",
-        end: "+=1600",
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
+            trigger: container,
+            start: "top top",
+            end: "+=1600",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+
+            onUpdate: (self) => {
+                const showCTA = self.progress >= 0.2;
+
+                achievements.style.pointerEvents = showCTA
+                    ? "none"
+                    : "auto";
+
+                cta.style.pointerEvents = showCTA
+                    ? "auto"
+                    : "none";
+            },
         },
     });
 
