@@ -10,11 +10,22 @@ export default function HorizontalScroll() {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
 
-  // 3 full-viewport panels side by side.
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.67%"]);
+  // 60% of the scroll duration is reserved for horizontal navigation.
+  const x = useTransform(
+    scrollYProgress,
+    [0, 0.6],
+    ["0%", "-66.67%"]
+  );
+
+  // The remaining 40% scrolls through the Experience timeline.
+  const experienceProgress = useTransform(
+    scrollYProgress,
+    [0.6, 1],
+    [0, 1]
+  );
 
   return (
-    <section ref={targetRef} className="relative h-[400vh]">
+    <section ref={targetRef} className="relative h-[600vh]">
       <div className="sticky top-0 flex h-screen w-screen items-center overflow-hidden">
         <motion.div style={{ x }} className="flex">
           <Panel>
@@ -26,7 +37,7 @@ export default function HorizontalScroll() {
           </Panel>
 
           <Panel>
-            <ExperienceSection />
+            <ExperienceSection scrollProgress={experienceProgress} />
           </Panel>
         </motion.div>
       </div>

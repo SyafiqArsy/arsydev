@@ -1,14 +1,39 @@
 import TextReveal from "@/components/animations/TextReveal";
 import StrokeText from "@/components/animations/StrokeText";
+import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import Lanyard from "@/components/3d/Lanyard";
 
 export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative z-10 -mt-[100vh] flex min-h-screen flex-col justify-center rounded-t-[2.5rem] bg-navy px-8 py-20 sm:px-12 md:rounded-t-[4rem] md:px-20"
+      className="relative isolate z-10 -mt-[100vh] flex min-h-screen flex-col justify-center overflow-hidden rounded-t-[2.5rem] bg-navy px-8 py-20 sm:px-12 md:rounded-t-[4rem] md:px-20"
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
+      {/* Animated ShapeGrid Background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <ShapeGrid
+          shape="square"
+          direction="diagonal"
+          lineColor="#12304a"
+          hoverColor="#38bdf8"
+          hoverFillColor="#0ea5e9"
+          fillOpacity={0.12}
+          cellSize={42}
+          lineWidth={1}
+          speed={0.3}
+          radius={1.5}
+          trail={0.8}
+          glow={0.3}
+          twinkle={0.08}
+          fade={0.8}
+          opacity={0.65}
+          clickCascade={false}
+          intro
+          backgroundColor="transparent"
+          className="absolute inset-0"
+        />
+      </div>
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
         <div>
           <h2 className="mt-2 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
             <StrokeText

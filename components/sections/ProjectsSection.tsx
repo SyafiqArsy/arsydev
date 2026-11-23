@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import StrokeText from "@/components/animations/StrokeText";
+import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import AccordionGallery, {
   type AccordionGalleryItem,
 } from "@/components/animations/AccordionGallery";
@@ -51,7 +52,34 @@ export default function ProjectsSection() {
   const router = useRouter();
 
   return (
-    <section id="projects" className="relative z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 md:px-20">
+    <section
+      id="projects"
+      className="relative isolate z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 md:px-20"
+    >
+      {/* Animated ShapeGrid Background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <ShapeGrid
+          shape="square"
+          direction="diagonal"
+          lineColor="#12304a"
+          hoverColor="#38bdf8"
+          hoverFillColor="#0ea5e9"
+          fillOpacity={0.12}
+          cellSize={42}
+          lineWidth={1}
+          speed={0.3}
+          radius={1.5}
+          trail={0.8}
+          glow={0.3}
+          twinkle={0.08}
+          fade={0.8}
+          opacity={0.65}
+          clickCascade={false}
+          intro
+          backgroundColor="transparent"
+          className="h-full w-full"
+        />
+      </div>
       <div className="mx-auto w-full max-w-6xl px-4">
         <motion.div
           initial={{ opacity: 0, x: 30 }}
@@ -81,7 +109,7 @@ export default function ProjectsSection() {
       </div>
 
       <motion.div
-        className="mx-auto mt-6 w-full max-w-6xl px-2"
+        className="relative z-10 mx-auto mt-6 w-full max-w-6xl px-2"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
@@ -109,7 +137,7 @@ export default function ProjectsSection() {
 
       {/* See More Projects Button */}
       <motion.div
-        className="mt-10 flex w-full justify-center"
+        className="relative z-10 mt-10 flex w-full justify-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

@@ -2,8 +2,9 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useTransform, type MotionValue } from "motion/react";
 import StrokeText from "@/components/animations/StrokeText";
+import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 
 interface ExperienceItem {
 id: string;
@@ -78,25 +79,30 @@ const EXPERIENCES: ExperienceItem[] = [
 },
 ];
 
-export default function ExperienceSection() {
-const scrollContainerRef = useRef<HTMLDivElement>(null);
+interface ExperienceSectionProps {
+    scrollProgress: MotionValue<number>;
+}
+
+export default function ExperienceSection({
+    scrollProgress,
+}: ExperienceSectionProps) {
+const timelineViewportRef = useRef<HTMLDivElement>(null);
 const timelineContentRef = useRef<HTMLDivElement>(null);
 
 const [timelineBounds, setTimelineBounds] = useState({
     start: 0,
     end: 0,
-});
-
-const { scrollYProgress } = useScroll({
-    container: scrollContainerRef,
+    maxScroll: 0,
 });
 
 const GLOW_HEIGHT = 24;
 
-// Measure marker positions using their actual layout coordinates.
+// Measure timeline markers and available page-driven scroll distance.
 useLayoutEffect(() => {
     const content = timelineContentRef.current;
-    if (!content) return;
+    const viewport = timelineViewportRef.current;
+
+    if (!content || !viewport) return;
 
     const updateTimelineBounds = () => {
         const firstMarker = content.querySelector<HTMLElement>(
@@ -123,13 +129,21 @@ useLayoutEffect(() => {
 
         const start = getMarkerCenter(firstMarker);
         const end = getMarkerCenter(lastMarker);
+        const maxScroll = Math.max(
+            0,
+            content.scrollHeight - viewport.clientHeight
+        );
 
         setTimelineBounds((previous) => {
-            if (previous.start === start && previous.end === end) {
+            if (
+                previous.start === start &&
+                previous.end === end &&
+                previous.maxScroll === maxScroll
+            ) {
                 return previous;
             }
 
-            return { start, end };
+            return { start, end, maxScroll };
         });
     };
 
@@ -137,6 +151,7 @@ useLayoutEffect(() => {
 
     const observer = new ResizeObserver(updateTimelineBounds);
     observer.observe(content);
+    observer.observe(viewport);
 
     window.addEventListener("resize", updateTimelineBounds);
 
@@ -147,8 +162,14 @@ useLayoutEffect(() => {
 }, []);
 
 // Animate glow strictly between the first and last marker.
+const timelineY = useTransform(
+    scrollProgress,
+    [0, 1],
+    [0, -timelineBounds.maxScroll]
+);
+
 const glowTop = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0, 1],
     [
         timelineBounds.start,
@@ -162,204 +183,224 @@ const glowTop = useTransform(
 return (
     <section
     id="experience"
-    className="relative flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 md:px-20"
+    className="relative isolate flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 md:px-20"
     >
-    {/* Background accents */}
-    <div className="pointer-events-none absolute -right-40 top-0 h-[28rem] w-[28rem] rounded-full bg-accent/5 blur-[120px]" />
-    <div className="pointer-events-none absolute -bottom-40 -left-40 h-[24rem] w-[24rem] rounded-full bg-blue-500/5 blur-[120px]" />
-
-    <div className="relative z-10 mx-auto grid w-full max-w-6xl min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
-        {/* Left: Section introduction */}
-        <div className="flex flex-col justify-center">
-        <h2 className="mt-4 max-w-lg text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-5xl">
-            <StrokeText
-            text="Experience & Journey."
-            responsive
-            fontSize={48}
-            fontWeight="inherit"
-            letterSpacing="inherit"
-            strokeColor="#38bdf8"
-            fillColor="currentColor"
-            strokeWidth={1.2}
-            drawDuration={1.4}
-            fillDelay={0.15}
-            stagger={0.035}
-            trigger="scroll"
-            fillMode="wipe"
-            wipeFrom="left"
+        {/* Animated ShapeGrid Background */}
+        <div className="pointer-events-none absolute inset-0 z-0">
+            <ShapeGrid
+                shape="square"
+                direction="diagonal"
+                lineColor="#10243d"
+                hoverColor="#38bdf8"
+                hoverFillColor="#0ea5e9"
+                fillOpacity={0.06}
+                cellSize={52}
+                lineWidth={1}
+                speed={0.18}
+                radius={1.5}
+                trail={0.65}
+                glow={0.18}
+                twinkle={0.04}
+                fade={0.9}
+                opacity={0.35}
+                clickCascade={false}
+                intro
+                backgroundColor="transparent"
+                className="h-full w-full"
             />
-        </h2>
-
-        <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-5 max-w-md text-sm leading-relaxed text-slate sm:text-base"
-        >
-            Every experience is a step forward. A collection of milestones,
-            challenges, and lessons that shape my professional journey.
-        </motion.p>
         </div>
 
-        
-        {/* Right: Scrollable Timeline */}
-        <div className="relative min-h-0 min-w-0 w-full">
+        {/* Background accents */}
+        <div className="pointer-events-none absolute -right-40 top-0 h-[28rem] w-[28rem] rounded-full bg-accent/5 blur-[120px]" />
+        <div className="pointer-events-none absolute -bottom-40 -left-40 h-[24rem] w-[24rem] rounded-full bg-blue-500/5 blur-[120px]" />
 
-            <div
-                ref={scrollContainerRef}
-                data-lenis-prevent
-                style={{
-                    maskImage:
-                        "linear-gradient(to bottom, transparent 0px, black 36px, black calc(100% - 36px), transparent 100%)",
-                    WebkitMaskImage:
-                        "linear-gradient(to bottom, transparent 0px, black 36px, black calc(100% - 36px), transparent 100%)",
-                }}
-                className="
-                relative z-10 w-full min-w-0 max-w-full
-                max-h-[52vh] overflow-x-hidden overflow-y-auto overscroll-contain
-                pr-2
-                [scrollbar-width:none]
-                [-ms-overflow-style:none]
-                [&::-webkit-scrollbar]:hidden
-                lg:max-h-[72vh]
-                "
-            >
+        <div className="relative z-10 mx-auto grid w-full max-w-6xl min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+            {/* Left: Section introduction */}
+            <div className="flex flex-col justify-center">
+            <h2 className="mt-4 max-w-lg text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl md:text-5xl">
+                <StrokeText
+                text="Experience & Journey."
+                responsive
+                fontSize={48}
+                fontWeight="inherit"
+                letterSpacing="inherit"
+                strokeColor="#38bdf8"
+                fillColor="currentColor"
+                strokeWidth={1.2}
+                drawDuration={1.4}
+                fillDelay={0.15}
+                stagger={0.035}
+                trigger="scroll"
+                fillMode="wipe"
+                wipeFrom="left"
+                />
+            </h2>
 
-            <div
-                ref={timelineContentRef}
-                className="relative flex w-full min-w-0 flex-col gap-4 py-10 sm:gap-5"
+            <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mt-5 max-w-md text-sm leading-relaxed text-slate sm:text-base"
             >
-                {/* Continuous Timeline Track */}
+                Every experience is a step forward. A collection of milestones,
+                challenges, and lessons that shape my professional journey.
+            </motion.p>
+            </div>
+
+            
+            {/* Right: Scrollable Timeline */}
+            <div className="relative min-h-0 min-w-0 w-full">
+
                 <div
+                    ref={timelineViewportRef}
                     style={{
-                        top: timelineBounds.start,
-                        height: Math.max(
-                            0,
-                            timelineBounds.end - timelineBounds.start
-                        ),
+                        maskImage:
+                            "linear-gradient(to bottom, transparent 0px, black 36px, black calc(100% - 36px), transparent 100%)",
+                        WebkitMaskImage:
+                            "linear-gradient(to bottom, transparent 0px, black 36px, black calc(100% - 36px), transparent 100%)",
                     }}
                     className="
-                    pointer-events-none absolute
-                    left-[15.5px] z-0
-                    w-px bg-sky-400/40
-                    sm:left-[20.5px]
+                        relative z-10 h-[52vh] w-full min-w-0 max-w-full
+                        overflow-hidden pr-2
+                        lg:h-[72vh]
                     "
-                />
+                >
 
-                {/* Moving Timeline Glow */}
                 <motion.div
-                    style={{ top: glowTop }}
-                    className="
-                    pointer-events-none absolute
-                    left-[14.5px] z-0
-                    h-6 w-[3px] rounded-full
-                    bg-gradient-to-b from-transparent via-sky-300 to-transparent
-                    shadow-[0_0_8px_rgba(56,189,248,0.9),0_0_20px_rgba(56,189,248,0.65)]
-                    sm:left-[19.5px]
-                    "
-                />
-                {EXPERIENCES.map((item, index) => (
-                    <motion.article
-                    key={item.id}
-                    initial={{
-                        opacity: 0,
-                        y: 28,
-                        scale: 0.94,
-                    }}
-                    whileInView={{
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                    }}
-                    viewport={{
-                        root: scrollContainerRef,
-                        once: false,
-                        amount: 0.2,
-                    }}
-                    transition={{
-                        type: "spring",
-                        stiffness: 260,
-                        damping: 22,
-                        delay: index * 0.05,
-                    }}
-                    className="group relative w-full min-w-0 pl-10 sm:pl-12"
-                    >
-                    {/* Timeline marker */}
+                    ref={timelineContentRef}
+                    style={{ y: timelineY }}
+                    className="relative flex w-full min-w-0 flex-col gap-4 py-10 sm:gap-5"
+                >
+                    {/* Continuous Timeline Track */}
                     <div
-                        data-timeline-marker={
-                            index === 0
-                                ? "first"
-                                : index === EXPERIENCES.length - 1
-                                    ? "last"
-                                    : undefined
-                        }
+                        style={{
+                            top: timelineBounds.start,
+                            height: Math.max(
+                                0,
+                                timelineBounds.end - timelineBounds.start
+                            ),
+                        }}
                         className="
-                        absolute left-[9px] top-6 z-10 flex h-3.5 w-3.5
-                        items-center justify-center rounded-full
-                        border border-sky-400/60 bg-navy
-                        transition-all duration-300
-                        group-hover:scale-125
-                        group-hover:border-sky-300
-                        group-hover:bg-sky-400
-                        group-hover:shadow-[0_0_20px_rgba(56,189,248,0.9)]
-                        sm:left-[13px] sm:h-4 sm:w-4
+                        pointer-events-none absolute
+                        left-[15.5px] z-0
+                        w-px bg-sky-400/40
+                        sm:left-[20.5px]
                         "
-                    >
-                        <span className="h-1 w-1 rounded-full bg-sky-400 transition-colors duration-300 group-hover:bg-navy" />
-                    </div>
+                    />
 
-                    {/* Experience card */}
-                    <div
+                    {/* Moving Timeline Glow */}
+                    <motion.div
+                        style={{ top: glowTop }}
                         className="
-                        relative w-full min-w-0 overflow-hidden break-words rounded-2xl
-                        border border-white/10
-                        bg-[#080f28]/75 p-4 backdrop-blur-md
-                        transition-all duration-300 ease-out
-                        group-hover:-translate-y-1
-                        group-hover:border-sky-400/70
-                        group-hover:bg-[#101d3d]
-                        group-hover:shadow-[0_0_30px_rgba(56,189,248,0.16),0_12px_30px_rgba(0,0,0,0.25)]
-                        sm:p-5
+                        pointer-events-none absolute
+                        left-[14.5px] z-0
+                        h-6 w-[3px] rounded-full
+                        bg-gradient-to-b from-transparent via-sky-300 to-transparent
+                        shadow-[0_0_8px_rgba(56,189,248,0.9),0_0_20px_rgba(56,189,248,0.65)]
+                        sm:left-[19.5px]
                         "
-                    >
-                        {/* Hover glow */}
-                        <div className="pointer-events-none absolute -right-12 -top-16 h-32 w-32 rounded-full bg-sky-400/0 blur-3xl transition-all duration-500 group-hover:bg-sky-400/20" />
-
-                        <div className="relative z-10">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-sky-400 transition-colors duration-300 group-hover:text-sky-300 sm:text-[10px]">
-                            {item.category}
-                            </span>
-
-                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[8px] tracking-wider text-slate/70 transition-all duration-300 group-hover:border-sky-400/40 group-hover:bg-sky-400/10 group-hover:text-sky-300 sm:text-[9px]">
-                            {item.type}
-                            </span>
+                    />
+                    {EXPERIENCES.map((item, index) => (
+                        <motion.article
+                        key={item.id}
+                        initial={{
+                            opacity: 0,
+                            y: 28,
+                            scale: 0.94,
+                        }}
+                        whileInView={{
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                        }}
+                        viewport={{
+                            once: false,
+                            amount: 0.2,
+                        }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 260,
+                            damping: 22,
+                            delay: index * 0.05,
+                        }}
+                        className="group relative w-full min-w-0 pl-10 sm:pl-12"
+                        >
+                        {/* Timeline marker */}
+                        <div
+                            data-timeline-marker={
+                                index === 0
+                                    ? "first"
+                                    : index === EXPERIENCES.length - 1
+                                        ? "last"
+                                        : undefined
+                            }
+                            className="
+                            absolute left-[9px] top-6 z-10 flex h-3.5 w-3.5
+                            items-center justify-center rounded-full
+                            border border-sky-400/60 bg-navy
+                            transition-all duration-300
+                            group-hover:scale-125
+                            group-hover:border-sky-300
+                            group-hover:bg-sky-400
+                            group-hover:shadow-[0_0_20px_rgba(56,189,248,0.9)]
+                            sm:left-[13px] sm:h-4 sm:w-4
+                            "
+                        >
+                            <span className="h-1 w-1 rounded-full bg-sky-400 transition-colors duration-300 group-hover:bg-navy" />
                         </div>
 
-                        <p className="mt-3 font-mono text-[10px] tracking-wider text-slate/60 transition-colors duration-300 group-hover:text-slate/90 sm:text-xs">
-                            {item.period}
-                        </p>
+                        {/* Experience card */}
+                        <div
+                            className="
+                            relative w-full min-w-0 overflow-hidden break-words rounded-2xl
+                            border border-white/10
+                            bg-[#080f28]/75 p-4 backdrop-blur-md
+                            transition-all duration-300 ease-out
+                            group-hover:-translate-y-1
+                            group-hover:border-sky-400/70
+                            group-hover:bg-[#101d3d]
+                            group-hover:shadow-[0_0_30px_rgba(56,189,248,0.16),0_12px_30px_rgba(0,0,0,0.25)]
+                            sm:p-5
+                            "
+                        >
+                            {/* Hover glow */}
+                            <div className="pointer-events-none absolute -right-12 -top-16 h-32 w-32 rounded-full bg-sky-400/0 blur-3xl transition-all duration-500 group-hover:bg-sky-400/20" />
 
-                        <h3 className="mt-1 text-base font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-sky-300 sm:text-lg">
-                            {item.role}
-                        </h3>
+                            <div className="relative z-10">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-sky-400 transition-colors duration-300 group-hover:text-sky-300 sm:text-[10px]">
+                                {item.category}
+                                </span>
 
-                        <p className="mt-1 text-xs font-medium text-slate transition-colors duration-300 group-hover:text-white/90 sm:text-sm">
-                            {item.organization}
-                        </p>
+                                <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[8px] tracking-wider text-slate/70 transition-all duration-300 group-hover:border-sky-400/40 group-hover:bg-sky-400/10 group-hover:text-sky-300 sm:text-[9px]">
+                                {item.type}
+                                </span>
+                            </div>
 
-                        <p className="mt-3 max-w-xl text-xs leading-relaxed text-slate/65 transition-colors duration-300 group-hover:text-slate/90 sm:text-sm">
-                            {item.description}
-                        </p>
+                            <p className="mt-3 font-mono text-[10px] tracking-wider text-slate/60 transition-colors duration-300 group-hover:text-slate/90 sm:text-xs">
+                                {item.period}
+                            </p>
+
+                            <h3 className="mt-1 text-base font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-sky-300 sm:text-lg">
+                                {item.role}
+                            </h3>
+
+                            <p className="mt-1 text-xs font-medium text-slate transition-colors duration-300 group-hover:text-white/90 sm:text-sm">
+                                {item.organization}
+                            </p>
+
+                            <p className="mt-3 max-w-xl text-xs leading-relaxed text-slate/65 transition-colors duration-300 group-hover:text-slate/90 sm:text-sm">
+                                {item.description}
+                            </p>
+                            </div>
                         </div>
-                    </div>
-                    </motion.article>
-                ))}
+                        </motion.article>
+                    ))}
+                </motion.div>
+            </div>
             </div>
         </div>
-        </div>
-    </div>
     </section>
 );
 }

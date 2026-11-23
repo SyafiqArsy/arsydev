@@ -8,11 +8,11 @@ import {
 } from "motion/react";
 
 interface HeroIntroVideoProps {
-  opacity: MotionValue<number>;
+  opacity?: MotionValue<number> | number;
 }
 
 export default function HeroIntroVideo({
-  opacity,
+  opacity = 1,
 }: HeroIntroVideoProps) {
   const [mounted, setMounted] = useState(false);
 

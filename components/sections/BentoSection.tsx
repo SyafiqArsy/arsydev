@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import StrokeText from "@/components/animations/StrokeText";
+import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import MagicBento, { type BentoCardData } from "@/components/animations/MagicBento";
 import Skills3DWrapper from "@/components/3d/Skills3DWrapper";
 
@@ -49,9 +50,37 @@ export default function BentoSection() {
   const [viewMode, setViewMode] = useState<"3d" | "grid">("3d");
 
   return (
-    <section id="skills" className="relative z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 sm:py-12 md:px-20">
+    <section
+      id="skills"
+      className="relative isolate z-10 flex h-full w-full flex-col justify-center overflow-hidden bg-navy px-8 py-10 sm:px-14 sm:py-12 md:px-20"
+    >
+      {/* Animated ShapeGrid Background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <ShapeGrid
+          shape="square"
+          direction="diagonal"
+          lineColor="#10243d"
+          hoverColor="#38bdf8"
+          hoverFillColor="#0ea5e9"
+          fillOpacity={0.08}
+          cellSize={48}
+          lineWidth={1}
+          speed={0.2}
+          radius={1.5}
+          trail={0.7}
+          glow={0.2}
+          twinkle={0.05}
+          fade={0.85}
+          opacity={0.4}
+          clickCascade={false}
+          intro
+          backgroundColor="transparent"
+          className="h-full w-full"
+        />
+      </div>
+
       {/* Header & View Switcher */}
-      <div className="mx-auto w-full max-w-6xl px-4 pt-2 md:pt-4">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pt-2 md:pt-4">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -114,7 +143,7 @@ export default function BentoSection() {
       </div>
 
       {/* Main Content Area */}
-      <div className="relative my-auto flex w-full items-center justify-center py-2">
+      <div className="relative z-10 my-auto flex w-full items-center justify-center py-2">
         <AnimatePresence mode="wait">
           {viewMode === "3d" ? (
             <motion.div

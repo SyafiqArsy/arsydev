@@ -52,7 +52,6 @@ export default function Home() {
             texts={["SYAFIQ MUHAMMAD MUSYAFA ARSY AT-TAUFIQ"]}
             velocity={50}
             fontWeight={800}
-            color="rgba(240, 249, 255, 0.35)"
             scrollerStyle={{
               fontSize: "clamp(1.75rem, 5vw, 4rem)",
               lineHeight: 1,
