@@ -119,13 +119,9 @@ export default function ProjectsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.3em] text-sky-400">
-              A little collection of my work
-            </p>
-
             <h1 className="text-5xl font-semibold tracking-[-0.05em] text-white sm:text-6xl md:text-8xl">
-              Featured
               <br />
+              Featured
               Projects<span className="text-sky-400">.</span>
             </h1>
 
