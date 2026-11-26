@@ -5,54 +5,8 @@ import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import StrokeText from "@/components/animations/StrokeText";
 import SplitText from "@/components/animations/SplitText";
 import RotatingText from "@/components/animations/RotatingText";
-import { Timeline, type TimelineEvent } from "@/components/ui/Timeline";
-
-const timelineEvents: TimelineEvent[] = [
-  {
-    id: "education",
-    date: "2022-01-01",
-    title: "Education",
-    meta: "Academic Journey",
-    media: (
-      <div className="flex h-full min-h-32 items-center justify-center rounded-xl border border-sky-400/20 bg-sky-400/5">
-        <span className="text-4xl font-bold text-sky-400">01</span>
-      </div>
-    ),
-  },
-  {
-    id: "organization",
-    date: "2023-01-01",
-    title: "Organization",
-    meta: "Leadership & Collaboration",
-    media: (
-      <div className="flex h-full min-h-32 items-center justify-center rounded-xl border border-sky-400/20 bg-sky-400/5">
-        <span className="text-4xl font-bold text-sky-400">02</span>
-      </div>
-    ),
-  },
-  {
-    id: "internship",
-    date: "2024-01-01",
-    title: "Internship",
-    meta: "Professional Experience",
-    media: (
-      <div className="flex h-full min-h-32 items-center justify-center rounded-xl border border-sky-400/20 bg-sky-400/5">
-        <span className="text-4xl font-bold text-sky-400">03</span>
-      </div>
-    ),
-  },
-  {
-    id: "projects",
-    date: "2025-01-01",
-    title: "Projects",
-    meta: "Personal & Technical Projects",
-    media: (
-      <div className="flex h-full min-h-32 items-center justify-center rounded-xl border border-sky-400/20 bg-sky-400/5">
-        <span className="text-4xl font-bold text-sky-400">04</span>
-      </div>
-    ),
-  },
-];
+import JourneyTimeline from "@/components/ui/JourneyTimeline";
+import FlexCarousel from "@/components/ui/FlexCarousel";
 
 export default function AboutPage() {
   return (
@@ -212,8 +166,33 @@ export default function AboutPage() {
         {/* Section 3: Journey & Experiences */}
         <section className="relative w-full overflow-hidden bg-[#020617] px-6 py-28 sm:px-10">
 
+          {/* ShapeGrid Background */}
+          <div className="pointer-events-none absolute inset-0 z-0">
+            <ShapeGrid
+              shape="square"
+              direction="diagonal"
+              lineColor="#12304a"
+              hoverColor="#38bdf8"
+              hoverFillColor="#0ea5e9"
+              fillOpacity={0.08}
+              cellSize={48}
+              lineWidth={1}
+              speed={0.2}
+              radius={1.5}
+              trail={0.8}
+              glow={0.25}
+              twinkle={0.06}
+              fade={0.85}
+              opacity={0.55}
+              clickCascade={false}
+              intro
+              backgroundColor="transparent"
+              className="absolute inset-0"
+            />
+          </div>
+
           {/* Background Accent */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,165,233,0.08),transparent_65%)]" />
+          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-[#020617]/20 via-transparent to-[#020617]/40" />
 
           <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center">
 
@@ -240,22 +219,62 @@ export default function AboutPage() {
               </h2>
             </div>
 
-            {/* Timeline */}
+            {/* Interactive Timeline */}
             <div className="w-full">
-              <Timeline
-                events={timelineEvents}
-                itemWidth={320}
-                height={420}
-                years
-                ruler
-                cables
-                aria-label="Journey and Experiences Timeline"
-                className="w-full"
-              />
+              <JourneyTimeline />
             </div>
 
             {/* Bottom Accent */}
             <div className="mt-12 h-px w-32 bg-gradient-to-r from-transparent via-sky-400 to-transparent" />
+
+          </div>
+        </section>
+
+        {/* Section 4: Gallery */}
+        <section className="relative isolate flex min-h-[720px] w-full items-center justify-center overflow-hidden bg-[#020617] py-20">
+
+          {/* ShapeGrid Background */}
+          <div className="pointer-events-none absolute inset-0 z-0">
+            <ShapeGrid
+              shape="square"
+              direction="diagonal"
+              lineColor="#12304a"
+              hoverColor="#38bdf8"
+              hoverFillColor="#0ea5e9"
+              fillOpacity={0.08}
+              cellSize={48}
+              lineWidth={1}
+              speed={0.2}
+              radius={1.5}
+              trail={0.8}
+              glow={0.25}
+              twinkle={0.06}
+              fade={0.85}
+              opacity={0.55}
+              clickCascade={false}
+              intro
+              backgroundColor="transparent"
+              className="absolute inset-0"
+            />
+          </div>
+
+          {/* Background Overlay */}
+          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-[#020617]/30 via-transparent to-[#020617]/40" />
+
+          {/* Gallery Content */}
+          <div className="relative z-10 w-full">
+
+            <div className="relative h-[560px] w-full">
+              <FlexCarousel
+                preset="liquid"
+                intro="rise"
+                cardHeight={0.5}
+                gap={12}
+                squeeze={0.2}
+                focusOnClick
+                captions
+              />
+            </div>
 
           </div>
         </section>

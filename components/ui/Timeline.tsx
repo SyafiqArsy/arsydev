@@ -51,7 +51,7 @@ const SIDE_DIM = 0.45;
 const YEAR_PARALLAX = 0.5;
 
 // Gap above the year numerals, as a fraction of their font size.
-const YEAR_INSET = 0.33;
+const YEAR_INSET = -0.15;
 
 // Cards sit on the stage middle, between two equal bands: the top one holds
 // the year numerals, and each holds the apex one fan of cables leaves from.
@@ -88,6 +88,8 @@ export type TimelineMessages = typeof timelineMessages;
 
 export interface TimelineProps {
   events: TimelineEvent[];
+  /** Callback when an event card is clicked. */
+  onEventClick?: (event: TimelineEvent) => void;
   /** Focused event id (controlled). */
   value?: string;
   /** Initially focused event id (uncontrolled). Defaults to the first event. */
@@ -388,6 +390,7 @@ function GapTicks({
 
 export function Timeline({
   events,
+  onEventClick,
   value,
   defaultValue,
   onValueChange,
@@ -755,7 +758,7 @@ export function Timeline({
         : null}
       <ul className="absolute inset-0">
         {events.map((event, i) => (
-          <TimelineCard
+        <TimelineCard
             key={event.id}
             scroll={scroll}
             index={i}
@@ -763,12 +766,15 @@ export function Timeline({
             event={event}
             dateLabel={formatDateLabel(dates[i])}
             active={i === activeIndex}
-            onSelect={select}
+            onSelect={(index) => {
+            select(index);
+            onEventClick?.(event);
+            }}
             onKeyDown={onKeyDown}
             buttonRef={(node) => {
-              buttonsRef.current[i] = node;
+            buttonsRef.current[i] = node;
             }}
-          />
+        />
         ))}
       </ul>
     </section>
