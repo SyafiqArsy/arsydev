@@ -1,6 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useLenis } from "@/components/providers/SmoothScroll";
 import StrokeText from "@/components/animations/StrokeText";
 import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import AccordionGallery, {
@@ -50,6 +53,43 @@ const galleryItems: AccordionGalleryItem[] = [
 
 export default function ProjectsSection() {
   const router = useRouter();
+  const lenis = useLenis();
+
+  const [selectedProject, setSelectedProject] =
+    useState<AccordionGalleryItem | null>(null);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedProject(null);
+      }
+    };
+
+    // Stop Lenis smooth scrolling.
+    lenis?.stop();
+
+    // Lock native browser scrolling.
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+
+      // Restore previous scroll styles.
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+
+      // Resume Lenis scrolling.
+      lenis?.start();
+    };
+  }, [selectedProject, lenis]);
 
   return (
     <section
@@ -117,6 +157,7 @@ export default function ProjectsSection() {
       >
         <AccordionGallery
           items={galleryItems}
+          onItemClick={(item) => setSelectedProject(item)}
           defaultIndex={2}
           height={320}
           gap={12}
@@ -151,6 +192,94 @@ export default function ProjectsSection() {
           See More Project <span aria-hidden="true">↗</span>
         </LiquidButton>
       </motion.div>
+
+      {/* Project Preview Modal - Rendered Outside Section */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {selectedProject && (
+              <motion.div
+                className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-[#020617]/85 px-4 py-6 backdrop-blur-md"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={() => setSelectedProject(null)}
+                role="presentation"
+              >
+                <motion.div
+                  className="relative my-auto w-full max-w-lg overflow-hidden rounded-2xl border border-sky-400/20 bg-[#080f28] shadow-[0_0_60px_rgba(56,189,248,0.12)]"
+                  initial={{ opacity: 0, y: 25, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 15, scale: 0.97 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  onClick={(event) => event.stopPropagation()}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="project-modal-title"
+                >
+                  {/* Close Button */}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(null)}
+                    className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-[#020617]/70 text-xl text-white backdrop-blur-md transition-colors hover:border-sky-400 hover:text-sky-400"
+                    aria-label="Close project preview"
+                  >
+                    &times;
+                  </button>
+
+                  {/* Project Image */}
+                  <div className="relative aspect-[16/9] w-full overflow-hidden">
+                    <img
+                      src={selectedProject.image}
+                      alt={
+                        selectedProject.alt ||
+                        selectedProject.label ||
+                        "Project preview"
+                      }
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#080f28] via-transparent to-transparent" />
+                  </div>
+
+                  {/* Project Information */}
+                  <div className="px-6 pb-7 pt-2 sm:px-8 sm:pb-8">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-sky-400">
+                      Featured Project
+                    </span>
+
+                    <h3
+                      id="project-modal-title"
+                      className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl"
+                    >
+                      {selectedProject.label}
+                      <span className="text-sky-400">.</span>
+                    </h3>
+
+                    <p className="mt-4 text-sm leading-7 text-slate-400">
+                      {selectedProject.alt}
+                    </p>
+
+                    {/* View Project Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedProject(null);
+                        router.push("/projects");
+                      }}
+                      className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl border border-sky-400/40 bg-sky-400/10 px-5 py-3 text-sm font-semibold text-sky-300 transition-all duration-300 hover:border-sky-400 hover:bg-sky-400 hover:text-[#020617]"
+                    >
+                      View Project
+                      <span aria-hidden="true">↗</span>
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
+
     </section>
   );
 }

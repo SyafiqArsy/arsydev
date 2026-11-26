@@ -9,7 +9,7 @@ interface PreloaderProps {
   onExitComplete: () => void;
 }
 
-const WORDMARK = "SYAFIQ ARSY";
+const WORDMARK = "ARSY DEV";
 
 export default function Preloader({ progress, isLoaded, onExitComplete }: PreloaderProps) {
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
@@ -65,7 +65,7 @@ export default function Preloader({ progress, isLoaded, onExitComplete }: Preloa
               transition={{ delay: 0.7, duration: 0.6 }}
               className="text-xs sm:text-sm uppercase tracking-[0.35em] text-slate"
             >
-              Crafting Digital Experiences&hellip;
+              Welcome
             </motion.p>
 
             <motion.div

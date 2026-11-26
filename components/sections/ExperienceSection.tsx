@@ -210,10 +210,6 @@ return (
             />
         </div>
 
-        {/* Background accents */}
-        <div className="pointer-events-none absolute -right-40 top-0 h-[28rem] w-[28rem] rounded-full bg-accent/5 blur-[120px]" />
-        <div className="pointer-events-none absolute -bottom-40 -left-40 h-[24rem] w-[24rem] rounded-full bg-blue-500/5 blur-[120px]" />
-
         <div className="relative z-10 mx-auto grid w-full max-w-6xl min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
             {/* Left: Section introduction */}
             <div className="flex flex-col justify-center">

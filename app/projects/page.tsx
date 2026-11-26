@@ -130,13 +130,6 @@ export default function ProjectsPage() {
               A collection of projects I&apos;ve built through exploration,
               problem solving, and continuous learning in technology.
             </p>
-
-            <div className="mt-10 flex items-center justify-center gap-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.8)]" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
-                06 Selected Projects
-              </span>
-            </div>
           </motion.section>
 
           {/* Project Collection */}
@@ -258,15 +251,6 @@ export default function ProjectsPage() {
                           </span>
                         ))}
                       </div>
-                    </div>
-
-                    <div className={`mt-12 flex items-center gap-3 text-xs text-slate-500 transition-colors duration-300 group-hover:text-sky-300 ${
-                    index % 2 === 0 ? "lg:flex-row-reverse" : ""
-                    }`}>
-                      <span className="h-px w-7 bg-current transition-all duration-300 group-hover:w-12" />
-                      <span className="font-mono uppercase tracking-[0.15em]">
-                        Selected Project
-                      </span>
                     </div>
                   </div>
                 </motion.article>

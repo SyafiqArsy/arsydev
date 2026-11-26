@@ -14,6 +14,7 @@ export interface AccordionGalleryItem {
 
 interface AccordionGalleryProps {
   items?: AccordionGalleryItem[];
+  onItemClick?: (item: AccordionGalleryItem, index: number) => void;
   defaultIndex?: number;
   accentColor?: string;
   overlayColor?: string;
@@ -44,6 +45,7 @@ const DEFAULT_ITEMS: AccordionGalleryItem[] = [
 
 export default function AccordionGallery({
   items = DEFAULT_ITEMS,
+  onItemClick,
   defaultIndex = 2,
   accentColor = "#ffffff",
   overlayColor = "#060010",
@@ -176,10 +178,13 @@ export default function AccordionGallery({
   };
 
   const handleClick = (i: number, e: React.MouseEvent) => {
+    e.preventDefault();
+
     if (i !== active) {
-      e.preventDefault();
       setActive(i);
     }
+
+    onItemClick?.(items[i], i);
   };
 
   const handleKeyDown = (i: number, e: React.KeyboardEvent) => {

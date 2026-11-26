@@ -131,7 +131,7 @@ export default function AboutPage() {
                   text="Passionate about building efficient, scalable, and maintainable digital solutions. I enjoy developing APIs, managing databases, and building reliable server-side systems."
                   tag="p"
                   className="max-w-3xl text-base leading-8 text-slate-300 sm:text-lg sm:leading-9"
-                  effect="rise"
+                  effect="flip"
                   hoverEffect="lift"
                   splitType="words"
                   delay={35}
@@ -147,7 +147,7 @@ export default function AboutPage() {
                   text="I thrive in collaborative environments where communication, coordination, and problem-solving turn ideas into meaningful results. Driven by continuous learning, I'm continuously expanding my knowledge of software engineering and cloud computing."
                   tag="p"
                   className="max-w-3xl text-base leading-8 text-slate-300 sm:text-lg sm:leading-9"
-                  effect="rise"
+                  effect="flip"
                   hoverEffect="lift"
                   splitType="words"
                   delay={30}
@@ -331,7 +331,15 @@ export default function AboutPage() {
           {/* Gallery Content */}
           <div className="relative z-10 w-full">
 
-            <div className="relative h-[560px] w-full">
+            <div
+              className="relative h-[560px] w-full"
+              style={{
+                maskImage:
+                  "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)",
+              }}
+            >
               <FlexCarousel
                 preset="liquid"
                 intro="rise"

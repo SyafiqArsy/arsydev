@@ -7,11 +7,11 @@ import { Html, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 import { SKILL_ITEMS, SkillItem } from "./techIcons";
 
-// Scaled down radii for 3 orbit rings with comfortable margin
+// Expanded orbit radii with stronger 3D separation
 const RING_RADII = {
-  1: { rx: 3.2, rz: 2.2, tiltX: 0.22, tiltZ: 0.08 },  // Inner
-  2: { rx: 5.2, rz: 3.6, tiltX: -0.3, tiltZ: -0.12 }, // Mid
-  3: { rx: 7.0, rz: 4.8, tiltX: 0.12, tiltZ: 0.2 },   // Outer
+  1: { rx: 4.0, rz: 3.0, tiltX: 0.38, tiltZ: 0.16 },  // Inner
+  2: { rx: 6.5, rz: 4.8, tiltX: -0.48, tiltZ: -0.22 }, // Mid
+  3: { rx: 9.0, rz: 6.5, tiltX: 0.32, tiltZ: 0.28 },   // Outer
 };
 
 interface OrbitNodeProps {
@@ -89,12 +89,27 @@ function OrbitNode({ item, activeId, setActiveId, isPaused }: OrbitNodeProps) {
             boxShadow: isHovered ? `0 0 20px ${item.bgColor}` : undefined,
           }}
         >
-          {/* Logo Only */}
+          {/* Technology Icon */}
           <div
             className="flex h-7 w-7 items-center justify-center rounded-full p-1 transition-transform duration-300 group-hover:scale-110 sm:h-8 sm:w-8"
             style={{ backgroundColor: item.bgColor }}
           >
             {item.icon}
+          </div>
+
+          {/* Technology Name Tooltip */}
+          <div
+            className={`pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md border px-2 py-1 text-[10px] font-medium leading-tight tracking-wide text-white shadow-[0_0_12px_rgba(56,189,248,0.12)] backdrop-blur-xl transition-all duration-300 ${
+              isHovered
+                ? "translate-y-0 scale-100 bg-[#080f28]/95 opacity-100"
+                : "translate-y-1 scale-95 bg-[#080f28]/0 opacity-0"
+            }`}
+            style={{
+              borderColor: isHovered ? item.color : "transparent",
+            }}
+            aria-hidden={!isHovered}
+          >
+            {item.name}
           </div>
         </div>
       </Html>
@@ -185,7 +200,7 @@ export default function SkillsOrbitScene() {
   return (
     <div className="relative mx-auto my-4 h-[380px] w-full max-w-5xl px-6 sm:h-[420px] md:h-[460px] md:px-12">
       <Canvas
-        camera={{ position: [0, 0, 15], fov: 44 }}
+        camera={{ position: [0, 0, 19], fov: 44 }}
         dpr={[1, 2]}
         gl={{ alpha: true, antialias: true }}
       >
