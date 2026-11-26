@@ -3,6 +3,7 @@
 
 import { motion } from "motion/react";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import { PinContainer } from "@/components/ui/3d-pin";
 
@@ -272,25 +273,11 @@ export default function ProjectsPage() {
               ))}
             </div>
           </section>
-
-          {/* Footer */}
-          <motion.footer
-            className="mt-24 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center sm:flex-row sm:text-left"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-xs text-slate-500">
-              Designed & built with curiosity.
-            </p>
-
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600">
-              More things coming soon.
-            </p>
-          </motion.footer>
         </div>
       </main>
+
+      {/* Shared Footer */}
+      <Footer />
     </>
   );
 }

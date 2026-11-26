@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import ParallaxHeroDemo from "@/components/ui/wilderness";
 
 import ShapeGrid from "@/components/backgrounds/ShapeGrid";
@@ -279,6 +280,9 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
+
+      {/* Section 5: Footer */}
+      <Footer />
     </>
   );
 }
