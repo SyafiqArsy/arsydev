@@ -6,6 +6,7 @@ import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import StrokeText from "@/components/animations/StrokeText";
 import SplitText from "@/components/animations/SplitText";
 import RotatingText from "@/components/animations/RotatingText";
+import DecryptedText from "@/components/ui/DecryptedText";
 import JourneyTimeline from "@/components/ui/JourneyTimeline";
 import FlexCarousel from "@/components/ui/FlexCarousel";
 
@@ -22,7 +23,10 @@ export default function AboutPage() {
         />
 
         {/* Section 2: About Me */}
-        <section className="relative isolate flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#020617] px-6 py-28 sm:px-10">
+        <section
+          data-decrypted-view
+          className="relative isolate flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#020617] px-6 py-28 sm:px-10"
+        >
 
           {/* ShapeGrid Background */}
           <div className="pointer-events-none absolute inset-0 z-0">
@@ -156,6 +160,68 @@ export default function AboutPage() {
                 />
 
               </div>
+            </div>
+
+            {/* Statistics Cards */}
+            <div className="mt-10 grid w-full max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3">
+
+              {/* Projects */}
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.035] px-4 py-6 backdrop-blur-sm transition-all duration-300 hover:border-sky-400/30 hover:bg-white/[0.06]">
+
+                <DecryptedText
+                  text="10+"
+                  animateOn="view"
+                  effect="scramble"
+                  sequential
+                  speed={160}
+                  maxIterations={12}
+                  className="text-2xl font-bold tracking-tight text-cyan-300 sm:text-3xl"
+                />
+
+                <span className="mt-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Projects
+                </span>
+
+              </div>
+
+              {/* Years Experience */}
+              <div className="flex min-h-[88px] flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-3 backdrop-blur-sm transition-all duration-300 hover:border-sky-400/30 hover:bg-white/[0.06]">
+
+                <DecryptedText
+                  text="3+"
+                  animateOn="view"
+                  effect="scramble"
+                  sequential
+                  speed={160}
+                  maxIterations={12}
+                  className="text-2xl font-bold tracking-tight text-cyan-300 sm:text-3xl"
+                />
+
+                <span className="mt-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Years Exp
+                </span>
+
+              </div>
+
+              {/* Tech Skills */}
+              <div className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.035] px-4 py-6 backdrop-blur-sm transition-all duration-300 hover:border-sky-400/30 hover:bg-white/[0.06]">
+
+                <DecryptedText
+                  text="5+"
+                  animateOn="view"
+                  effect="scramble"
+                  sequential
+                  speed={160}
+                  maxIterations={12}
+                  className="text-2xl font-bold tracking-tight text-cyan-300 sm:text-3xl"
+                />
+
+                <span className="mt-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Tech Skills
+                </span>
+
+              </div>
+
             </div>
 
             {/* Bottom Accent */}

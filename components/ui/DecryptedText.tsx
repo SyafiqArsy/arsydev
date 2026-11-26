@@ -452,32 +452,44 @@ export default function DecryptedText({
   }, [loop]);
 
   useEffect(() => {
-    const viewTrigger = animateOn === 'view' || animateOn === 'inViewHover';
-    if (!viewTrigger && !loop) return;
-    const node = containerRef.current;
-    if (!node || typeof IntersectionObserver === 'undefined') return;
-    const observer = new IntersectionObserver(
-      entries => {
-        const visible = entries.some(entry => entry.isIntersecting);
-        visibleRef.current = visible;
-        if (!visible) return;
-        if (viewTrigger && !playedRef.current) {
-          playedRef.current = true;
-          engineRef.current?.startRun(true);
-        }
-        const resume = pendingRef.current;
-        pendingRef.current = null;
-        resume?.();
-        if (!loop) observer.disconnect();
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(node);
-    return () => {
-      observer.disconnect();
-      visibleRef.current = true;
-    };
-  }, [animateOn, loop, chars]);
+      const viewTrigger = animateOn === 'view' || animateOn === 'inViewHover';
+      if (!viewTrigger && !loop) return;
+
+      const node = containerRef.current;
+      if (!node || typeof IntersectionObserver === 'undefined') return;
+
+      // Use the shared About Me section as the animation trigger.
+      const sharedTarget = node.closest('[data-decrypted-view]');
+      const target = sharedTarget ?? node;
+
+      const observer = new IntersectionObserver(
+        entries => {
+          const visible = entries.some(entry => entry.isIntersecting);
+          visibleRef.current = visible;
+
+          if (!visible) return;
+
+          if (viewTrigger && !playedRef.current) {
+            playedRef.current = true;
+            engineRef.current?.startRun(true);
+          }
+
+          const resume = pendingRef.current;
+          pendingRef.current = null;
+          resume?.();
+
+          if (!loop) observer.disconnect();
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(target);
+
+      return () => {
+        observer.disconnect();
+        visibleRef.current = true;
+      };
+    }, [animateOn, loop, chars]);
 
   useIsomorphicLayoutEffect(() => {
     const previous = previousRef.current;
