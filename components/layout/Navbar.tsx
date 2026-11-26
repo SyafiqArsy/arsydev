@@ -25,7 +25,7 @@ export default function Navbar() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-8 py-6 sm:px-12">
         <a
-          href="#home"
+          href="/"
           className={`font-mono text-lg font-bold tracking-wider transition-colors duration-500 ${
             lightNav ? "hero-text" : "text-white"
           }`}
