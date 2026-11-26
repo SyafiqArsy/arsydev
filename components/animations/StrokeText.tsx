@@ -378,7 +378,7 @@ const outlineLayer = (
 return (
     <span
     ref={rootRef}
-    className={`block w-full leading-[0] ${trigger === 'hover' ? 'cursor-pointer' : ''} ${className}`.trim()}
+    className={`flex w-full justify-center leading-[0] ${trigger === 'hover' ? 'cursor-pointer' : ''} ${className}`.trim()}
     style={style}
     role="img"
     aria-label={String(text ?? '')}
