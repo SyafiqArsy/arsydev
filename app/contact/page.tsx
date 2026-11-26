@@ -198,6 +198,7 @@ export default function ContactPage() {
                   caption="Preview menggunakan data testimonial demo dari 21st.dev."
                   size={360}
                   autoRotate
+                  rotationSpeed={1}
                   autoplay
                   interval={4500}
                 />
