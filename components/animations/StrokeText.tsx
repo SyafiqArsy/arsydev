@@ -2,11 +2,6 @@
 
 import { CSSProperties, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-gsap.registerPlugin(ScrollTrigger);
-}
 
 export type StrokeTextTrigger = 'mount' | 'hover' | 'scroll' | 'loop';
 export type StrokeTextFillMode = 'wipe' | 'fade' | 'none';
@@ -266,7 +261,7 @@ useLayoutEffect(() => {
     };
 
     let timeline: gsap.core.Timeline | null = null;
-    let scrollTrigger: ReturnType<typeof ScrollTrigger.create> | null = null;
+    let intersectionObserver: IntersectionObserver | null = null;
     let redraw: gsap.core.Timeline | null = null;
     const listeners: (() => void)[] = [];
 
@@ -285,12 +280,22 @@ useLayoutEffect(() => {
     } else {
     timeline = build();
     if (trigger === 'scroll') {
-        scrollTrigger = ScrollTrigger.create({
-        trigger: root,
-        start: 'top 82%',
-        once: true,
-        onEnter: () => timeline?.play(0)
-        });
+        intersectionObserver = new IntersectionObserver(
+            (entries) => {
+                const entry = entries[0];
+
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.1) {
+                    timeline?.play(0);
+                    intersectionObserver?.disconnect();
+                }
+            },
+            {
+                root: null,
+                threshold: 0.1,
+            }
+        );
+
+        intersectionObserver.observe(root);
     } else {
         timeline.play(0);
     }
@@ -318,12 +323,12 @@ useLayoutEffect(() => {
         : null;
 
     return () => {
-    listeners.forEach(handler => root.removeEventListener('pointerenter', handler));
-    scrollTrigger?.kill();
-    timeline?.kill();
-    redraw?.kill();
-    march?.kill();
-    gsap.killTweensOf(targets);
+        listeners.forEach(handler => root.removeEventListener('pointerenter', handler));
+        intersectionObserver?.disconnect();
+        timeline?.kill();
+        redraw?.kill();
+        march?.kill();
+        gsap.killTweensOf(targets);
     };
 }, [
     box,

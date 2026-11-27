@@ -120,14 +120,15 @@ export default function ProjectsSection() {
           className="h-full w-full"
         />
       </div>
-      <div className="mx-auto w-full max-w-6xl px-4">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl justify-center px-4 text-center">
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          className="relative z-10 flex w-full justify-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="mt-2 max-w-2xl text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
+          <h2 className="mt-2 w-full text-center text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
             <StrokeText
               text="Featured Projects."
               responsive
@@ -143,10 +144,12 @@ export default function ProjectsSection() {
               trigger="scroll"
               fillMode="wipe"
               wipeFrom="left"
+              className="mx-auto"
             />
           </h2>
         </motion.div>
       </div>
+
 
       <motion.div
         className="relative z-10 mx-auto mt-6 w-full max-w-6xl px-2"

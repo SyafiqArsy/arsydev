@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import ProjectsSection from "@/components/sections/ProjectsSection";
-import BentoSection from "@/components/sections/BentoSection";
+import TechEcosystemSection from "@/components/sections/TechEcosystemSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 
 export default function HorizontalScroll() {
@@ -33,7 +33,7 @@ export default function HorizontalScroll() {
           </Panel>
 
           <Panel>
-            <BentoSection />
+            <TechEcosystemSection />
           </Panel>
 
           <Panel>
