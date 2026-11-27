@@ -1,4 +1,3 @@
-
 "use client";
 
 import { motion } from "motion/react";
@@ -6,11 +5,56 @@ import StrokeText from "@/components/animations/StrokeText";
 import ShapeGrid from "@/components/backgrounds/ShapeGrid";
 import Skills3DWrapper from "@/components/3d/Skills3DWrapper";
 
-export default function BentoSection() {
+import {
+  RadarChart,
+} from "@/components/charts/radar-chart";
+import { RadarArea } from "@/components/charts/radar-area";
+import { RadarAxis } from "@/components/charts/radar-axis";
+import { RadarGrid } from "@/components/charts/radar-grid";
+import { RadarLabels } from "@/components/charts/radar-labels";
+
+// =====================================================
+// SKILL COMPETENCY PLACEHOLDER
+// Ubah nilai 0-100 berikut sesuai kemampuan sebenarnya.
+// =====================================================
+
+const SKILL_METRICS = [
+  { key: "frontend", label: "Frontend" },
+  { key: "backend", label: "Backend" },
+  { key: "api", label: "API" },
+  { key: "database", label: "Database" },
+  { key: "cloud", label: "Cloud" },
+  { key: "devops", label: "DevOps" },
+  { key: "linux", label: "Linux" },
+  { key: "architecture", label: "System" },
+  { key: "programming", label: "Coding" },
+  { key: "iot", label: "IoT" },
+];
+
+const SKILL_DATA = [
+  {
+    label: "Technical Skills",
+    color: "#38bdf8",
+    values: {
+      frontend: 80,
+      backend: 70,
+      api: 75,
+      database: 65,
+      cloud: 60,
+      devops: 55,
+      linux: 70,
+      architecture: 60,
+      programming: 85,
+      iot: 45,
+    },
+  },
+];
+
+export default function TechEcosystemSection() {
   return (
     <section
       id="skills"
-      className="relative isolate z-10 flex h-full w-full flex-col items-center justify-center overflow-hidden bg-navy px-6 py-10 sm:px-10 md:px-16"
+      className="relative isolate z-10 flex h-full w-full flex-col items-center justify-center overflow-hidden bg-navy px-4 py-4 sm:px-8 md:px-12 lg:py-8"
     >
       {/* Animated ShapeGrid Background */}
       <div className="pointer-events-none absolute inset-0 z-0">
@@ -37,9 +81,9 @@ export default function BentoSection() {
         />
       </div>
 
-      {/* Tech Ecosystem Heading */}
+      {/* Heading */}
       <motion.div
-        className="relative z-10 w-full max-w-6xl text-center"
+        className="relative z-10 w-full max-w-6xl shrink-0 text-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -65,16 +109,75 @@ export default function BentoSection() {
         </h2>
       </motion.div>
 
-      {/* 3D Technology Orbit */}
-      <motion.div
-        className="relative z-10 w-full max-w-6xl"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.15 }}
-      >
-        <Skills3DWrapper />
-      </motion.div>
+      {/* Technology Orbit & Radar Chart */}
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-2 lg:grid-cols-[1.15fr_0.85fr] lg:gap-4">
+
+        {/* 3D Technology Orbit */}
+        <motion.div
+          className="relative flex w-full items-center justify-center"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.15 }}
+        >
+          <div className="w-full">
+            <Skills3DWrapper />
+          </div>
+        </motion.div>
+
+        {/* Radar Chart */}
+        <motion.div
+          className="relative mx-auto flex w-full max-w-[460px] items-center justify-center"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div
+            className="w-full"
+            style={{
+              "--chart-background": "#080f28",
+              "--chart-foreground": "#f0f9ff",
+              "--chart-foreground-muted": "#94a3b8",
+              "--chart-label": "#cbd5e1",
+              "--chart-grid": "rgba(148, 163, 184, 0.2)",
+            } as React.CSSProperties}
+          >
+            <RadarChart
+              data={SKILL_DATA}
+              metrics={SKILL_METRICS}
+              levels={5}
+              margin={58}
+              animate
+              className="w-full"
+            >
+              <RadarGrid
+                showLabels
+                stroke="rgba(148, 163, 184, 0.25)"
+                strokeOpacity={0.7}
+              />
+
+              <RadarAxis
+                stroke="#64748b"
+                strokeOpacity={0.5}
+              />
+
+              <RadarLabels
+                offset={22}
+                fontSize={10}
+              />
+
+              <RadarArea
+                index={0}
+                color="#38bdf8"
+                showPoints
+                showStroke
+                showGlow
+              />
+            </RadarChart>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }

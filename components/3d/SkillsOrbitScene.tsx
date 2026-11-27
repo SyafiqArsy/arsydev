@@ -198,7 +198,7 @@ export default function SkillsOrbitScene() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <div className="relative mx-auto my-4 h-[380px] w-full max-w-5xl px-6 sm:h-[420px] md:h-[460px] md:px-12">
+    <div className="relative mx-auto my-4 h-[380px] w-full max-w-5xl sm:h-[420px] md:h-[460px]">
       <Canvas
         camera={{ position: [0, 0, 19], fov: 44 }}
         dpr={[1, 2]}
